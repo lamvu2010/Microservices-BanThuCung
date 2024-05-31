@@ -49,7 +49,7 @@ public class LoginController {
             loginResponse.setTenDangNhap(taikhoan.getTendangnhap());
             loginResponse.setQuyen(role);
             loginResponse.setToken(token);
-            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK); 
         }else{
             return new ResponseEntity<>("Mật khẩu không đúng!",HttpStatus.BAD_REQUEST);
         }
