@@ -7,12 +7,12 @@ spring:
           predicates:
             - Method=POST,PUT,DELETE
             - Path=/center/**
-          filters:
-            - name: NhanVienFilter
-            - name: CircuitBreaker
-              args:
-                name: center-service
-                fallbackuri: forward:/centerServiceFallback
+#          filters:
+#            - name: NhanVienFilter
+#            - name: CircuitBreaker
+#              args:
+#                name: center-service
+#                fallbackuri: forward:/centerServiceFallback
 
 
         - id: center-get-route
