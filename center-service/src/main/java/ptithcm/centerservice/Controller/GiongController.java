@@ -47,7 +47,7 @@ public class GiongController {
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
-    @PostMapping("/them")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody GiongDTO giongDTO){
         Giong giong = new Giong();
         giong.setTengiong(giongDTO.getTengiong());

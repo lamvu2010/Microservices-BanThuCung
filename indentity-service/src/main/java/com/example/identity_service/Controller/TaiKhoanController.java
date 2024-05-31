@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/tk")
+@RequestMapping("/identity/tk")
 public class TaiKhoanController {
     @Autowired
     private TaiKhoanService taiKhoanService;
@@ -67,6 +68,21 @@ public class TaiKhoanController {
         try{
             taikhoan = taiKhoanService.save(taikhoan);
             return new ResponseEntity<>("Cập nhật thành công", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/reset")
+    public ResponseEntity<?> reset(@RequestBody TaiKhoanDTO taiKhoanDTO){
+        if(!taiKhoanService.isExistsById(taiKhoanDTO.getTenDangNhap())){
+            return new ResponseEntity<>("Tài khoản không tồn tại",HttpStatus.BAD_REQUEST);
+        }
+        Taikhoan taikhoan = taiKhoanService.findById(taiKhoanDTO.getTenDangNhap()).get();
+        taikhoan.setMatkhau(UUID.randomUUID().toString().substring(0, 10));
+        try{
+            taikhoan = taiKhoanService.save(taikhoan);
+            return new ResponseEntity<>(taikhoan.getMatkhau(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
         }
