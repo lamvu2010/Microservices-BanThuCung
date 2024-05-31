@@ -24,7 +24,7 @@ public class Taikhoan {
     private String matkhau;
 
     @Column(name = "QUYEN", nullable = true)
-    private Boolean quyen;
+    private String quyen;
 
     @Column(name = "TRANGTHAI", nullable = true)
     private Boolean trangthai;
