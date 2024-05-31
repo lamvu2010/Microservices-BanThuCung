@@ -1,0 +1,78 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: center-post-route
+          uri: lb://center-service
+          predicates:
+            - Method=POST,PUT,DELETE
+            - Path=/center/**
+          filters:
+            - name: NhanVienFilter
+            - name: CircuitBreaker
+              args:
+                name: center-service
+                fallbackuri: forward:/centerServiceFallback
+
+
+        - id: center-get-route
+          uri: lb://center-service
+          predicates:
+            - Path=/center/**
+            - Method=GET
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: Api-BanThuCungOnline
+                fallbackuri: forward:/centerServiceFallback
+
+        - id: order-route
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: order-service
+                fallbackuri: forward:/orderServiceFallback
+            - name: AuthenticationFilter
+
+
+        - id: identity-kh-route
+          uri: lb://identity-service
+          predicates:
+            - Path=/identity/khachhang,/identity/nhanvien
+          filters:
+            - name: AuthenticationFilter
+
+        - id: identity-filter-route
+          uri: lb://identity-service
+          predicates:
+            - Path=/identity/**
+          filters:
+            - name: NhanVienFilter
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-resigtry: true
+    server-url:
+      defaultZone: http://localhost:8761/eureka/
+    instance:
+      hostname: localhost
+
+server:
+  port: 8989
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000

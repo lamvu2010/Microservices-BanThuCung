@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="864404cf-091c-4d46-8eb4-fdd24e73a212" name="BANTHUCUNG_ONLINE@localhost Mapping">
+      <data-sources db="1de76b12-e0ab-423a-89c6-9d8d1e50a84f" ddl="bcc77456-2a4f-4c7b-b2e3-79114704ffe6" />
+      <scope>
+        <node kind="database" qname="BANTHUCUNG_ONLINE" />
+      </scope>
+    </mapping>
+  </component>
+</project>

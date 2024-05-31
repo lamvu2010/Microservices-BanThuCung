@@ -1,0 +1,4 @@
+Error web service:
+1. Loại thú cưng: khi convert sang Dao, truyền nhầm mã của Dao thay vì đối tượng cần truyền => mã giống nhau
+2. update giống truyền nhầm maGiong hay vì idLoaiThuCung
+3. Bổ sung controller chi nhánh, update database thêm indentify key vào mã chi nhánh

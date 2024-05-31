@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="Api_BanThuCungOnline" value="1de76b12-e0ab-423a-89c6-9d8d1e50a84f" />
+          <factory-entry name="entityManagerFactory" />
+          <factory-entry name="noname-a.xml@0" value="1de76b12-e0ab-423a-89c6-9d8d1e50a84f" />
+        </datasource-mapping>
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+  </component>
+</module>
