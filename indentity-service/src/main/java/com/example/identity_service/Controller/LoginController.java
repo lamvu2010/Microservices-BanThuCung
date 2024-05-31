@@ -38,12 +38,7 @@ public class LoginController {
             return new ResponseEntity<>("Tài khoản bị khóa!",HttpStatus.BAD_REQUEST);
         }
         if(taikhoan.getMatkhau().equals(loginDTO.getMatKhau())){
-            String role = "";
-            if(taikhoan.getQuyen()==false){
-                role = "khachhang";
-            }else{
-                role = "nhanvien";
-            }
+            String role = taikhoan.getQuyen();
             String token = jwtService.createToken(new HashMap<>(),taikhoan.getTendangnhap(),role);
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setTenDangNhap(taikhoan.getTendangnhap());
