@@ -25,7 +25,7 @@ public class NhanVienController {
 
     public NhanVienDTO convertToDTO(Nhanvien nhanvien) {
         NhanVienDTO nhanVienDTO = new NhanVienDTO();
-        if(nhanvien.getMachinhanh()!= null){
+        if (nhanvien.getMachinhanh() != null) {
             nhanVienDTO.setMaChiNhanh(nhanvien.getMachinhanh());
         }
         nhanVienDTO.setMaNhanVien(nhanvien.getManhanvien());
@@ -74,16 +74,20 @@ public class NhanVienController {
         nhanvien.setChucvu(nhanVienDTO.getChucVu());
         nhanvien.setSodienthoai(nhanVienDTO.getSoDienThoai());
         nhanvien.setManhanvien(nhanVienService.maNhanVienMoi());
-        if ( nhanVienDTO.getMaChiNhanh() != 0) {
+        if (nhanVienDTO.getMaChiNhanh() != 0) {
             nhanvien.setMachinhanh(nhanVienDTO.getMaChiNhanh());
         }
         Taikhoan taikhoan = new Taikhoan();
         taikhoan.setTendangnhap(nhanvien.getManhanvien());
         taikhoan.setMatkhau("12345678910");
-        taikhoan.setQuyen(Boolean.TRUE);
+        taikhoan.setQuyen(nhanvien.getChucvu());
         taikhoan.setTrangthai(Boolean.TRUE);
-        taikhoan = taiKhoanService.save(taikhoan);
-        nhanvien = nhanVienService.save(nhanvien);
+        try {
+            nhanvien = nhanVienService.save(nhanvien);
+            taikhoan = taiKhoanService.save(taikhoan);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
+        }
         NhanVienDTO nhanVienDTO1 = convertToDTO(nhanvien);
         return new ResponseEntity<>(nhanVienDTO1, HttpStatus.OK);
         // lấy thông tin tài khoản bằng request mới
@@ -108,7 +112,7 @@ public class NhanVienController {
     }
 
     @DeleteMapping("/{id}/")
-    public ResponseEntity<?> delete(@PathVariable String id){
+    public ResponseEntity<?> delete(@PathVariable String id) {
         if (!nhanVienService.isExistsById(id)) {
             return new ResponseEntity<>("Nhân viên không tồn tại", HttpStatus.BAD_REQUEST);
         }

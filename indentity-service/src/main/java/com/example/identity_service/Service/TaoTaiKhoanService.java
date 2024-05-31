@@ -37,13 +37,12 @@ public class TaoTaiKhoanService {
         Taikhoan taikhoan = new Taikhoan();
         taikhoan.setTendangnhap(registerRequest.getTenDangNhap());
         taikhoan.setMatkhau(registerRequest.getMatKhau());
-        taikhoan.setQuyen(Boolean.FALSE);
+        taikhoan.setQuyen("khachhang");
         String uuid = UUID.randomUUID().toString().substring(0, 10);
         taikhoan.setMaxacnhan(uuid);
         taikhoan.setTrangthai(Boolean.FALSE);
         taikhoan.setThoigiantaoma(LocalDateTime.now());
         taikhoan.setThoigianhethan(LocalDateTime.now().plusMinutes(5));
-        taikhoan = taiKhoanService.save(taikhoan);
         Khachhang khachhang = new Khachhang();
         khachhang.setMakhachhang(registerRequest.getTenDangNhap());
         khachhang.setEmail(registerRequest.getEmail());
@@ -52,6 +51,7 @@ public class TaoTaiKhoanService {
         khachhang.setHo(registerRequest.getHo());
         khachhang.setTen(registerRequest.getTen());
         khachHangService.save(khachhang);
+        taikhoan = taiKhoanService.save(taikhoan);
 //        try {
 //            emailService.send(khachhang.getEmail(), "MÃ XÁC NHẬN", taikhoan.getMaxacnhan());
 //        } catch (MessagingException e) {
@@ -90,13 +90,12 @@ public class TaoTaiKhoanService {
         Taikhoan taikhoan = new Taikhoan();
         taikhoan.setTendangnhap(registerRequest.getTenDangNhap());
         taikhoan.setMatkhau(registerRequest.getMatKhau());
-        taikhoan.setQuyen(Boolean.FALSE);
+        taikhoan.setQuyen("khachhang");
         String uuid = UUID.randomUUID().toString().substring(0, 10);
         taikhoan.setMaxacnhan(uuid);
         taikhoan.setTrangthai(Boolean.FALSE);
         taikhoan.setThoigiantaoma(LocalDateTime.now());
         taikhoan.setThoigianhethan(LocalDateTime.now().plusMinutes(5));
-        taikhoan = taiKhoanService.save(taikhoan);
         Khachhang khachhang = new Khachhang();
         khachhang.setMakhachhang(registerRequest.getTenDangNhap());
         khachhang.setEmail(registerRequest.getEmail());
@@ -105,6 +104,7 @@ public class TaoTaiKhoanService {
         khachhang.setHo(registerRequest.getHo());
         khachhang.setTen(registerRequest.getTen());
         khachHangService.save(khachhang);
+        taikhoan = taiKhoanService.save(taikhoan);
 //        try {
 //            emailService.send(khachhang.getEmail(), "MÃ XÁC NHẬN", taikhoan.getMaxacnhan());
 //        } catch (MessagingException e) {
