@@ -36,7 +36,7 @@ public class NhanVienController {
         nhanVienDTO.setEmail(nhanvien.getEmail());
         nhanVienDTO.setChucVu(nhanvien.getChucvu());
         nhanVienDTO.setSoDienThoai(nhanvien.getSodienthoai());
-        if (!nhanvien.getHinhanh().isEmpty()) {
+        if (nhanvien.getHinhanh()!=null&&!nhanvien.getHinhanh().isEmpty()) {
             nhanVienDTO.setHinhAnh(new ArrayList<>());
             for (Hinhanh item : nhanvien.getHinhanh()) {
                 nhanVienDTO.getHinhAnh().add(item.getMahinhanh());
