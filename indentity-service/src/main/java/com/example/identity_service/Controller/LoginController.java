@@ -39,7 +39,7 @@ public class LoginController {
         }
         if(taikhoan.getMatkhau().equals(loginDTO.getMatKhau())){
             String role = "";
-            if(taikhoan.getQuyen()==false){
+            if(taikhoan.getQuyen().equals("khachhang")){
                 role = "khachhang";
             }else{
                 role = "nhanvien";

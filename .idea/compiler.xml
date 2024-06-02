@@ -11,6 +11,7 @@
         <module name="indentity-service" />
         <module name="order-service" />
         <module name="center-service" />
+        <module name="identity-service" />
         <module name="service-registry" />
       </profile>
     </annotationProcessing>
@@ -23,6 +24,7 @@
       <module name="Api_BanThuCungOnline" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="center-service" options="-parameters" />
+      <module name="identity-service" options="-parameters" />
       <module name="indentity-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="service-registry" options="-parameters" />

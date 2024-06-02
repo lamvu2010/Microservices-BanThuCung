@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class TaiKhoanDTO {
     private String tenDangNhap;
     private String matKhau;
-    private Boolean quyen;
+    private String quyen;
     private Boolean trangThai;
     private String maXacNhan;
     private LocalDateTime thoiGianTaoMa;
