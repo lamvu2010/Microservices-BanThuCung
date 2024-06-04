@@ -1,4 +1,4 @@
-package ptithcm.centerservice.DTORequest;
+package com.example.order_service.DTORequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class BangGiaThuCungRequest {
-    private long maBangGia;
+@AllArgsConstructor
+public class DonDatThuCungRequest {
+    private long maDonDat;
     private long maThuCung;
     private BigDecimal donGia;
+    private int soLuong;
 }

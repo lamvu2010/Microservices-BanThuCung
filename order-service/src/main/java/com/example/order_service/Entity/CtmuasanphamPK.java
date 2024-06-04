@@ -18,5 +18,5 @@ public class CtmuasanphamPK implements Serializable {
     @Column(name = "MASANPHAM", nullable = false)
     private long masanpham;
     @Column(name = "MACHINHANH",nullable = false)
-    private long machinhanh;
+    private int machinhanh;
 }

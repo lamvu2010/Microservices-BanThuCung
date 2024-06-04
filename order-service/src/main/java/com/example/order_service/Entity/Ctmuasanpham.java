@@ -24,7 +24,7 @@ public class Ctmuasanpham {
 
     @ManyToOne
     @MapsId("sodondat")
-    @JoinColumn(name = "SOLUONGDAT")
+    @JoinColumn(name = "SODONDAT")
     private Dondat dondat;
 
 }

@@ -92,6 +92,7 @@ public class SanPhamController {
         if (ctsanpham.getChinhanh() != null) {
             sanPhamDTO.setMaChiNhanh(ctsanpham.getChinhanh().getMachinhanh());
         }
+        sanPhamDTO.setSoLuongTon(ctsanpham.getSoluongton());
         return sanPhamDTO;
     }
 
@@ -149,6 +150,22 @@ public class SanPhamController {
             return new ResponseEntity<>("Xoa that bai", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("Xoa thanh cong", HttpStatus.OK);
+        }
+    }
+
+    @PutMapping("/soluongton")
+    public String capNhatSoLuongTon(@RequestBody SanPhamDTO sanPhamDTO){
+        System.out.println(sanPhamDTO.getMaChiNhanh());
+        System.out.println(sanPhamDTO.getMaSanPham());
+        CtsanphamPK ctsanphamPK = new CtsanphamPK(sanPhamDTO.getMaChiNhanh(), sanPhamDTO.getMaSanPham());
+        Ctsanpham ctsanpham = chiTietSanPhamService.findById(ctsanphamPK).get();
+        ctsanpham.setSoluongton(ctsanpham.getSoluongton() + sanPhamDTO.getSoLuongTon());
+        try{
+            ctsanpham = chiTietSanPhamService.save(ctsanpham);
+            return "Cập nhật thành công";
+        }
+        catch (Exception e){
+            return "Cập nhật thất bại";
         }
     }
 }

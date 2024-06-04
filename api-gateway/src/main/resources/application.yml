@@ -20,22 +20,26 @@ spring:
           predicates:
             - Path=/center/**
             - Method=GET
-          # filters:
-          #   - name: CircuitBreaker
-          #     args:
-          #       name: Api-BanThuCungOnline
-          #       fallbackuri: forward:/centerServiceFallback
+
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: Api-BanThuCungOnline
+#                fallbackuri: forward:/centerServiceFallback
+
 
         - id: order-route
           uri: lb://order-service
           predicates:
             - Path=/order/**
+
           # filters:
           #   - name: CircuitBreaker
           #     args:
           #       name: order-service
           #       fallbackuri: forward:/orderServiceFallback
           #   - name: AuthenticationFilter
+
 
 
         - id: identity-kh-route
@@ -45,12 +49,14 @@ spring:
           # filters:
             # - name: AuthenticationFilter
 
+
         - id: identity-filter-route
           uri: lb://identity-service
           predicates:
             - Path=/identity/**
           # filters:
             # - name: NhanVienFilter
+
 eureka:
   client:
     register-with-eureka: true
