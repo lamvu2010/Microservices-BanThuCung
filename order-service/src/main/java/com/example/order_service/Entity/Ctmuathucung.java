@@ -19,8 +19,11 @@ public class Ctmuathucung {
     @Column(name = "DONGIA", nullable = false)
     private BigDecimal dongia;
 
+    @Column(name = "SOLUONG", nullable = false)
+    private int soluong;
+
     @ManyToOne
-    @MapsId
+    @MapsId("madondat")
     @JoinColumn(name = "MADONDAT")
     private Dondat dondat;
 }

@@ -17,5 +17,4 @@ public class Chinhanh {
     private int machinhanh;
     @Column(name = "TENCHINHANH", nullable = true, length = 50)
     private String tenchinhanh;
-
 }

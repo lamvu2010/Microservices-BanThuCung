@@ -39,11 +39,19 @@ public class LoginController {
         }
         if(taikhoan.getMatkhau().equals(loginDTO.getMatKhau())){
             String role = "";
-            if(taikhoan.getQuyen()==false){
+            if(taikhoan.getQuyen().equals("khachhang")){
                 role = "khachhang";
-            }else{
+            }
+            if(taikhoan.getQuyen().equals("nhanvien")){
                 role = "nhanvien";
             }
+            if(taikhoan.getQuyen().equals("admin")){
+                role = "admin";
+            }
+            if(taikhoan.getQuyen().equals("quanly")){
+                role = "quanly";
+            }
+
             String token = jwtService.createToken(new HashMap<>(),taikhoan.getTendangnhap(),role);
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setTenDangNhap(taikhoan.getTendangnhap());
