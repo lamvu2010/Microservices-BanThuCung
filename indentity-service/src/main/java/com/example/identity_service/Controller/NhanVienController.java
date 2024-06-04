@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/identity/nhanvien")
@@ -35,7 +36,7 @@ public class NhanVienController {
         nhanVienDTO.setEmail(nhanvien.getEmail());
         nhanVienDTO.setChucVu(nhanvien.getChucvu());
         nhanVienDTO.setSoDienThoai(nhanvien.getSodienthoai());
-        if (!nhanvien.getHinhanh().isEmpty()) {
+        if (nhanvien.getHinhanh()!=null&&!nhanvien.getHinhanh().isEmpty()) {
             nhanVienDTO.setHinhAnh(new ArrayList<>());
             for (Hinhanh item : nhanvien.getHinhanh()) {
                 nhanVienDTO.getHinhAnh().add(item.getMahinhanh());
@@ -57,6 +58,18 @@ public class NhanVienController {
             dtoList.add(nhanVienDTO);
         }
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable String id) {
+        Optional<Nhanvien> nhanvien = nhanVienService.findById(id);
+        if (nhanvien.isEmpty()) {
+            return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
+        } else {
+            NhanVienDTO nhanVienDTO = new NhanVienDTO();
+            nhanVienDTO = convertToDTO(nhanvien.orElse(null));
+            return new ResponseEntity<>(nhanVienDTO, HttpStatus.OK);
+        }
     }
 
 //    @GetMapping("/moi")

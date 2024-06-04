@@ -10,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KhachHangDTO {
+    private String maKhachHang;
     private String ho;
     private String ten;
     private Boolean gioiTinh;
@@ -17,4 +18,5 @@ public class KhachHangDTO {
     private String soDienThoai;
     private String email;
     private String cccd;
+    private String diaChi;
 }

@@ -83,6 +83,7 @@ public class BangGiaThuCungController {
             }
             return new ResponseEntity<>("Cập nhật thành công", HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
         }
     }
