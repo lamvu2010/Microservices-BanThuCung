@@ -17,4 +17,5 @@ public class SanPhamDTO {
     private LoaiSanPhamDTO loaiSanPham;
     private List<Long> hinhAnh;
     private int maChiNhanh;
+    private long soLuongTon;
 }

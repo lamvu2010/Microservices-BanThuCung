@@ -1,8 +1,11 @@
 package com.example.order_service.Service;
 
+import com.example.order_service.DTORequest.SoLuongSanPhamRequest;
+import com.example.order_service.DTORequest.SoLuongThuCungRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Service
 public class ApiService {
@@ -15,5 +18,27 @@ public class ApiService {
     }
 
     // Định nghĩa các hàm gọi api đến service khác
+    public String updateSoLuongTon(SoLuongSanPhamRequest soLuongSanPhamRequest){
+        String result =  webClientBuilder
+                .build()
+                .put()
+                .uri("http://center-service/center/sanpham/soluongton")
+                .bodyValue(soLuongSanPhamRequest)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        return result;
+    }
 
+    public String updateSoLuongTon(SoLuongThuCungRequest soLuongThuCungRequest){
+        String result =  webClientBuilder
+                .build()
+                .put()
+                .uri("http://center-service/center/thucung/soluongton")
+                .bodyValue(soLuongThuCungRequest)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        return result;
+    }
 }

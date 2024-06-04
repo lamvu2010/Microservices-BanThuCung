@@ -12,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CtsanphamPK implements Serializable {
+
     @Column(name = "MACHINHANH", nullable = false)
     private int machinhanh;
     @Column(name = "MASANPHAM", nullable = false)

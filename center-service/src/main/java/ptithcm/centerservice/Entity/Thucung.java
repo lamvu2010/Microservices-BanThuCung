@@ -34,6 +34,9 @@ public class Thucung {
     @Column(name = "GIAHIENTAI", nullable = true)
     private BigDecimal giahientai;
 
+    @Column(name = "SOLUONGTON",nullable = true)
+    private int soluongton;
+
     @OneToMany(mappedBy = "thucung")
     List<Ctbanggiathucung> ctbanggiathucung;
 

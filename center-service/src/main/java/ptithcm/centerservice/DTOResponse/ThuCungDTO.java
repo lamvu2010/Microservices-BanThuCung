@@ -20,4 +20,5 @@ public class ThuCungDTO {
     private ChiNhanhDTO chiNhanh;
     private GiongDTO giong;
     private List<Long> hinhAnh;
+    private int soLuongTon;
 }

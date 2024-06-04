@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "HOADON")
@@ -15,15 +15,17 @@ import java.sql.Date;
 @AllArgsConstructor
 public class Hoadon {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SOHOADON", nullable = false)
-    private Long sohoadon;
+    private long sohoadon;
 
     @Column(name = "NGAYLAP", nullable = true)
-    private Date ngaylap;
+    private Timestamp ngaylap;
 
     @Column(name = "TONGHOADON", nullable = true)
     private BigDecimal tonghoadon;
+
+    @Column(name = "MANHANVIEN",nullable = true)
+    private String manhanvien;
 
     @OneToOne(mappedBy = "hoadon")
     private Dondat dondat;
