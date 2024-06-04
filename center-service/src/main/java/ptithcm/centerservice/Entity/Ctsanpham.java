@@ -25,12 +25,12 @@ public class Ctsanpham {
     private BigDecimal dongia;
 
     @ManyToOne
-    @MapsId
+    @MapsId("masanpham")
     @JoinColumn(name = "MASANPHAM")
     private Sanpham sanpham;
 
     @ManyToOne
-    @MapsId
+    @MapsId("machinhanh")
     @JoinColumn(name = "MACHINHANH")
     private Chinhanh chinhanh;
 
