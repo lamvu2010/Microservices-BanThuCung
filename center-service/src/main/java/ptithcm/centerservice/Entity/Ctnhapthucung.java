@@ -19,6 +19,9 @@ public class Ctnhapthucung {
     @Column(name = "GIANHAP", nullable = true)
     private BigDecimal gianhap;
 
+    @Column(name = "SOLUONG",nullable = true)
+    private int soluong;
+
     @ManyToOne
     @MapsId
     @JoinColumn(name = "MADONNHAP")

@@ -2,11 +2,17 @@ package com.example.apigateway.Security.Config;
 
 import com.example.apigateway.Security.Config.JWT.JwtService;
 import com.example.apigateway.Security.Config.JWT.JwtUtil;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
@@ -19,6 +25,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private AuthorizationConfig authorizationConfig;
 
     public AuthenticationFilter() {
         super(Config.class);
@@ -39,14 +48,31 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
                 try {
                     jwtUtil.validateToken(authHeader);
+                    String role = jwtService.getRole(authHeader);
+                    String path = exchange.getRequest().getURI().getPath();
+                    String method = exchange.getRequest().getMethod().toString();
+                    Optional<AuthorizationConfig.AuthorizationRule> ruleOpt = authorizationConfig.getRules()
+                            .stream()
+                            .filter(rule -> path.matches(rule.getPath().replace("**", ".*")) && rule.getMethods().contains(method))
+                            .findFirst();
+                    if (ruleOpt.isPresent()) {
+                        List<String> allowedRoles = ruleOpt.get().getRoles();
+                        if (!allowedRoles.contains(role)) {
+                            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+                        } else {
+                            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+                        }
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
+                    }
                 } catch (Exception e) {
-                    System.out.println("Invalid access...!");
-                    throw new RuntimeException("Un authorized access to application");
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access", e);
                 }
             }
             return chain.filter(exchange);
         });
     }
-    public static class Config{
+
+    public static class Config {
     }
 }

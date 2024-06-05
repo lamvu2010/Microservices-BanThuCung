@@ -124,7 +124,7 @@ public class NhanVienController {
         return new ResponseEntity<>(nhanVienDTO1, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}/")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
         if (!nhanVienService.isExistsById(id)) {
             return new ResponseEntity<>("Nhân viên không tồn tại", HttpStatus.BAD_REQUEST);
