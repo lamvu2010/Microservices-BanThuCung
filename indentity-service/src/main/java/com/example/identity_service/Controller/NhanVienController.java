@@ -119,12 +119,13 @@ public class NhanVienController {
         nhanvien.setChucvu(nhanVienDTO.getChucVu());
         nhanvien.setSodienthoai(nhanVienDTO.getSoDienThoai());
         nhanvien.setManhanvien(nhanVienDTO.getMaNhanVien());
+        nhanvien.setMachinhanh(nhanVienDTO.getMaChiNhanh());
         nhanvien = nhanVienService.save(nhanvien);
         NhanVienDTO nhanVienDTO1 = convertToDTO(nhanvien);
         return new ResponseEntity<>(nhanVienDTO1, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}/")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
         if (!nhanVienService.isExistsById(id)) {
             return new ResponseEntity<>("Nhân viên không tồn tại", HttpStatus.BAD_REQUEST);
