@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,7 +22,7 @@ public class Donnhaphang {
     private long madonnhaphang;
 
     @Column(name = "NGAYLAP", nullable = true)
-    private Date ngaylap;
+    private LocalDateTime ngaylap;
 
 //    @ManyToOne
 //    @JoinColumn(name = "MANHANVIEN")
