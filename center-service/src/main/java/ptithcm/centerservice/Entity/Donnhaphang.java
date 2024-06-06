@@ -22,7 +22,7 @@ public class Donnhaphang {
     private long madonnhaphang;
 
     @Column(name = "NGAYLAP", nullable = true)
-    private LocalDateTime ngaylap;
+    private Timestamp ngaylap;
 
 //    @ManyToOne
 //    @JoinColumn(name = "MANHANVIEN")

@@ -1,5 +1,6 @@
 package com.example.order_service.Service;
 
+import com.example.order_service.DTOResponse.DonDatDTO;
 import com.example.order_service.Entity.Dondat;
 import com.example.order_service.Repository.DonDatRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,16 @@ public class DonDatService {
 
     public boolean isExistsById(long id) {
         return donDatRepo.existsById(id);
+    }
+
+    public DonDatDTO convertToDTO(Dondat dondat){
+        DonDatDTO donDatDTO = new DonDatDTO();
+        donDatDTO.setSoDonDat(dondat.getSodondat());
+        donDatDTO.setDiaChi(dondat.getDiachidat());
+        donDatDTO.setNgayLap(dondat.getNgaylap());
+        donDatDTO.setMaKhachhang(donDatDTO.getMaKhachhang());
+        donDatDTO.setSoDienThoai(dondat.getSodienthoai());
+        donDatDTO.setMaChiNhanh(dondat.getMachinhanh());
+        return donDatDTO;
     }
 }
