@@ -34,6 +34,9 @@ public class Dondat {
     @Column(name = "MAKHACHHANG",nullable = true)
     private String makhachhang;
 
+    @Column(name = "TRANGTHAI",nullable = true)
+    private Boolean trangthai;
+
     @OneToOne
     @MapsId("sodondat")
     @JoinColumn(name = "SODONDAT")

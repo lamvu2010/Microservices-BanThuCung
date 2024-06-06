@@ -1,6 +1,8 @@
 package com.example.order_service.Controller;
 
 import com.example.order_service.DTORequest.*;
+import com.example.order_service.DTOResponse.DonDatDTO;
+import com.example.order_service.DTOResponse.HoaDonDTO;
 import com.example.order_service.Entity.*;
 import com.example.order_service.Repository.CtMuaThuCungRepo;
 import com.example.order_service.Service.*;
@@ -9,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,6 +34,38 @@ public class DatHangController {
 
     @Autowired
     private ApiService apiService;
+
+    @GetMapping
+    public ResponseEntity<?> findAll() {
+        List<Hoadon> list = hoaDonService.findAll();
+        List<HoaDonDTO> dtoList = new ArrayList<>();
+        for (Hoadon item : list) {
+            HoaDonDTO hoaDonDTO = new HoaDonDTO();
+            hoaDonDTO.setMaHoaDon(item.getSohoadon());
+            hoaDonDTO.setNgayLap(item.getNgaylap());
+            hoaDonDTO.setTongHoaDon(item.getTonghoadon());
+            dtoList.add(hoaDonDTO);
+        }
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getHoaDon(@PathVariable long id) {
+        HoaDonDTO hoaDonDTO = new HoaDonDTO();
+        DonDatDTO donDatDTO = new DonDatDTO();
+        Dondat dondat = donDatService.findById(id).orElse(null);
+        Hoadon hoadon = hoaDonService.findById(id).orElse(null);
+        if (dondat != null && hoadon != null) {
+            donDatDTO = donDatService.convertToDTO(dondat);
+            hoaDonDTO.setDonDat(donDatDTO);
+            hoaDonDTO.setTenNhanVien(hoadon.getManhanvien());
+            hoaDonDTO.setNgayLap(hoadon.getNgaylap());
+            hoaDonDTO.setTongHoaDon(hoadon.getTonghoadon());
+            return new ResponseEntity<>(hoaDonDTO, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Không tìm thấy hóa đơn, đơn đặt",HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @PostMapping("/sp")
     public ResponseEntity<?> themSP(@RequestBody List<DonDatSanPhamRequest> list) {
@@ -77,11 +114,13 @@ public class DatHangController {
         try {
             Hoadon hoadon = new Hoadon();
             hoadon.setSohoadon(hoaDonRequest.getSoHoaDon());
-            hoadon.setNgaylap(hoaDonRequest.getNgayLap());
+            hoadon.setNgaylap(Timestamp.valueOf(LocalDateTime.now()));
             hoadon.setTonghoadon(hoaDonService.tongHoaDon(hoaDonRequest.getSoHoaDon()));
             hoadon.setManhanvien(hoaDonRequest.getMaNhanVien());
             hoadon = hoaDonService.save(hoadon);
             Dondat dondat = donDatService.findById(hoaDonRequest.getSoHoaDon()).get();
+            dondat.setTrangthai(Boolean.TRUE);
+            dondat = donDatService.save(dondat);
             System.out.println("Chạy vào try");
             for (Ctmuasanpham item : dondat.getCtmuasanpham()) {
                 SoLuongSanPhamRequest soLuongSanPhamRequest = new SoLuongSanPhamRequest();
