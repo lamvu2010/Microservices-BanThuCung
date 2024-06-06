@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DonNhapHangDTO {
     private long maDonNhapHang;
-    private LocalDateTime ngayLap;
+    private Timestamp ngayLap;
     private String maNhanVien;
     private ChiNhanhDTO chiNhanhDTO;
 }
