@@ -32,7 +32,7 @@ public class StorageService {
     private SanPhamRepo sanPhamRepo;
 
 
-    private final String FOLDER_PATH = "D:/HUONG DICH VU/Project/center-service/src/main/java/ptithcm/centerservice/HinhAnh/";
+    private final String FOLDER_PATH = "D:\\SpringBoostWorkspace\\Microservice\\Microservices-BanThuCung\\center-service\\src\\main\\java\\ptithcm\\centerservice\\HinhAnh/";
 
     // lưu ảnh từ multipart về file system
     @Transactional
