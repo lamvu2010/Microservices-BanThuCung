@@ -82,3 +82,14 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 5000
+
+authorization:
+  rules:
+    - path:
+      - /api/user/**
+      -
+      methods: [GET, POST]
+      roles: [USER, ADMIN]
+    - path: /api/admin/**
+      methods: [GET, POST, DELETE]
+      roles: [ADMIN]

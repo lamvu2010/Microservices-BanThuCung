@@ -1,4 +1,4 @@
-package com.example.order_service.DTORequest;
+package ptithcm.centerservice.DTORequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
