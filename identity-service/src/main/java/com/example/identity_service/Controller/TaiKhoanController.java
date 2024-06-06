@@ -65,9 +65,6 @@ public class TaiKhoanController {
         Taikhoan taikhoan = taiKhoanService.findById(taiKhoanDTO.getTenDangNhap()).get();
         taikhoan.setMatkhau(taiKhoanDTO.getMatKhau());
         taikhoan.setTrangthai(taiKhoanDTO.getTrangThai());
-        if(taiKhoanDTO.getQuyen()!=null){
-            taikhoan.setQuyen(taiKhoanDTO.getQuyen());
-        }
         try{
             taikhoan = taiKhoanService.save(taikhoan);
             return new ResponseEntity<>("Cập nhật thành công", HttpStatus.OK);
