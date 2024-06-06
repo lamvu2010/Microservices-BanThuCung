@@ -24,12 +24,12 @@ public class Ctnhapsanpham {
     private BigDecimal dongia;
 
     @ManyToOne
-    @MapsId
+    @MapsId("madonhap")
     @JoinColumn(name = "MADONNHAP")
     private Donnhaphang donnhaphang;
 
     @ManyToOne
-    @MapsId
+    @MapsId("masanpham")
     @JoinColumn(name = "MASANPHAM")
     private Sanpham sanpham;
 }
