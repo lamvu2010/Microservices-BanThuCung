@@ -49,6 +49,7 @@ public class DonDatController {
         dondat.setNgaylap(donDatDTO.getNgayLap());
         dondat.setMakhachhang(donDatDTO.getMaKhachhang());
         dondat.setSodienthoai(donDatDTO.getSoDienThoai());
+        dondat.setTrangthai(Boolean.FALSE);
         try {
             dondat = donDatService.save(dondat);
             return new ResponseEntity<>(dondat, HttpStatus.OK);

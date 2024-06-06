@@ -34,6 +34,8 @@ public class NhapHangService {
     private ThuCungRepo thuCungRepo;
     @Autowired
     private CtSanPhamRepo ctSanPhamRepo;
+    @Autowired
+    private SanPhamRepo sanPhamRepo;
 
     public DonNhapHangDTO convertTODTO(Donnhaphang donnhaphang) {
         DonNhapHangDTO donNhapHangDTO = new DonNhapHangDTO();
@@ -75,19 +77,24 @@ public class NhapHangService {
         for (DonNhapThuCungRequest donNhapThuCungRequest : list) {
             Ctnhapthucung ctnhapthucung = new Ctnhapthucung();
             CtnhapthucungPK ctnhapthucungPK = new CtnhapthucungPK();
+            Donnhaphang donnhaphang = donNhapHangRepo.findById(donNhapThuCungRequest.getMaDonNhap()).get();
+            Thucung thucung = thuCungRepo.findById(donNhapThuCungRequest.getMaThuCung()).get();
             ctnhapthucungPK.setMadonnhap(donNhapThuCungRequest.getMaDonNhap());
             ctnhapthucungPK.setMathucung(donNhapThuCungRequest.getMaThuCung());
             ctnhapthucung.setId(ctnhapthucungPK);
             ctnhapthucung.setGianhap(donNhapThuCungRequest.getGiaNhap());
+            ctnhapthucung.setSoluong(donNhapThuCungRequest.getSoLuong());
+            ctnhapthucung.setDonnhaphang(donnhaphang);
+            ctnhapthucung.setThucung(thucung);
             try {
                 ctnhapthucung = ctNhapThuCungRepo.save(ctnhapthucung);
 //                SoLuongThuCungRequest soLuongThuCungRequest = new SoLuongThuCungRequest();
 //                soLuongThuCungRequest.setMaThuCung(ctnhapthucung.getId().getMathucung());
 //                soLuongThuCungRequest.setSoLuongTon(ctnhapthucung.getSoluong());
 //                apiService.updateSoLuongTon(soLuongThuCungRequest);
-                Thucung thucung = thuCungRepo.findById(ctnhapthucung.getId().getMathucung()).get();
+                Thucung thucung1 = thuCungRepo.findById(ctnhapthucung.getId().getMathucung()).get();
                 thucung.setSoluongton(thucung.getSoluongton()+ctnhapthucung.getSoluong());
-                thuCungRepo.save(thucung);
+                thuCungRepo.save(thucung1);
             } catch (Exception e) {
                 throw new IllegalStateException("Nhập thú cưng thất bại: " + e);
             }
@@ -97,6 +104,9 @@ public class NhapHangService {
     @Transactional
     public void nhapSanPham(List<DonNhapSanPhamRequest> list) {
         for (DonNhapSanPhamRequest donNhapSanPhamRequest : list) {
+            Donnhaphang donnhaphang =  donNhapHangRepo.findById(donNhapSanPhamRequest.getMaDonNhap()).get();
+            // CtsanphamPK ctsanphamPK = new CtsanphamPK(donnhaphang.getChinhanh().getMachinhanh(),donNhapSanPhamRequest.getMaSanPham());
+
             Ctnhapsanpham ctnhapsanpham = new Ctnhapsanpham();
             CtnhapsanphamPK ctnhapsanphamPK = new CtnhapsanphamPK();
             ctnhapsanphamPK.setMadonnhap(donNhapSanPhamRequest.getMaDonNhap());
@@ -104,6 +114,8 @@ public class NhapHangService {
             ctnhapsanpham.setId(ctnhapsanphamPK);
             ctnhapsanpham.setSoluong(donNhapSanPhamRequest.getSoLuong());
             ctnhapsanpham.setDongia(donNhapSanPhamRequest.getDonGia());
+            ctnhapsanpham.setSanpham(sanPhamRepo.findById(donNhapSanPhamRequest.getMaSanPham()).get());
+            ctnhapsanpham.setDonnhaphang(donnhaphang);
             try {
                 ctnhapsanpham = ctNhapSanPhamRepo.save(ctnhapsanpham);
 //                SoLuongSanPhamRequest soLuongSanPhamRequest = new SoLuongSanPhamRequest();
