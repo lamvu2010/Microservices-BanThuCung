@@ -13,6 +13,7 @@ import ptithcm.centerservice.DTOResponse.DonNhapHangDTO;
 import ptithcm.centerservice.Entity.*;
 import ptithcm.centerservice.Repositories.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class NhapHangService {
         DonNhapHangDTO donNhapHangDTO = new DonNhapHangDTO();
         donNhapHangDTO.setMaDonNhapHang(donnhaphang.getMadonnhaphang());
         donNhapHangDTO.setNgayLap(donnhaphang.getNgaylap());
-        donNhapHangDTO.setMaNhanVien(donNhapHangDTO.getMaNhanVien());
+        donNhapHangDTO.setMaNhanVien(donnhaphang.getManhanvien());
         donNhapHangDTO.setChiNhanhDTO(new ChiNhanhDTO());
         if (donnhaphang.getChinhanh() != null) {
             donNhapHangDTO.getChiNhanhDTO().setMaChiNhanh(donnhaphang.getChinhanh().getMachinhanh());
@@ -47,11 +48,16 @@ public class NhapHangService {
         return donNhapHangDTO;
     }
 
+    // Lấy danh sách các bản ghi
+    public List<Donnhaphang> findAll(){
+        return donNhapHangRepo.findAll();
+    }
+
     @Transactional
     public DonNhapHangDTO taoDonNhapHang(DonNhapHangDTO donNhapHangDTO) {
         Donnhaphang donnhaphang = new Donnhaphang();
         donnhaphang.setManhanvien(donNhapHangDTO.getMaNhanVien());
-        donnhaphang.setNgaylap(LocalDateTime.now());
+        donnhaphang.setNgaylap(Timestamp.valueOf(LocalDateTime.now()));
         if (donNhapHangDTO.getChiNhanhDTO() != null) {
             donnhaphang.setChinhanh(chiNhanhRepo.findById(donNhapHangDTO.getChiNhanhDTO().getMaChiNhanh()).orElse(null));
         }

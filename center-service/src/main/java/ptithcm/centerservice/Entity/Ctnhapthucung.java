@@ -23,12 +23,12 @@ public class Ctnhapthucung {
     private int soluong;
 
     @ManyToOne
-    @MapsId
+    @MapsId("madonnhap")
     @JoinColumn(name = "MADONNHAP")
     private Donnhaphang donnhaphang;
 
     @ManyToOne
-    @MapsId
+    @MapsId("mathucung")
     @JoinColumn(name = "MATHUCUNG")
     private Thucung thucung;
 }
