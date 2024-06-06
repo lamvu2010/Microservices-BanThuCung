@@ -1,6 +1,7 @@
 package com.example.identity_service.Controller;
 
 import com.example.identity_service.DTOResponse.KhachHangDTO;
+import com.example.identity_service.Entity.Hinhanh;
 import com.example.identity_service.Entity.Khachhang;
 import com.example.identity_service.Entity.Khachhang;
 import com.example.identity_service.Service.KhachHangService;
@@ -36,6 +37,12 @@ public class KhachHangController {
         khachHangDTO.setSoDienThoai(khachhang.getSodienthoai());
         khachHangDTO.setCccd(khachhang.getCccd());
         khachHangDTO.setDiaChi(khachhang.getDiachi());
+        if (khachhang.getHinhanh()!=null&&!khachhang.getHinhanh().isEmpty()) {
+            khachHangDTO.setHinhAnh(new ArrayList<>());
+            for (Hinhanh item : khachhang.getHinhanh()) {
+                khachHangDTO.getHinhAnh().add(item.getMahinhanh());
+            }
+        }
         return khachHangDTO;
     }
 
