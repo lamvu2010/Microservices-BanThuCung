@@ -13,6 +13,7 @@ import ptithcm.centerservice.DTOResponse.DonNhapHangDTO;
 import ptithcm.centerservice.Entity.*;
 import ptithcm.centerservice.Repositories.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class NhapHangService {
     public DonNhapHangDTO taoDonNhapHang(DonNhapHangDTO donNhapHangDTO) {
         Donnhaphang donnhaphang = new Donnhaphang();
         donnhaphang.setManhanvien(donNhapHangDTO.getMaNhanVien());
-        donnhaphang.setNgaylap(LocalDateTime.now());
+        donnhaphang.setNgaylap(Timestamp.valueOf(LocalDateTime.now()));
         if (donNhapHangDTO.getChiNhanhDTO() != null) {
             donnhaphang.setChinhanh(chiNhanhRepo.findById(donNhapHangDTO.getChiNhanhDTO().getMaChiNhanh()).orElse(null));
         }
