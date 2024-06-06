@@ -8,6 +8,7 @@ import ptithcm.centerservice.DTOResponse.LoaiSanPhamDTO;
 import ptithcm.centerservice.DTOResponse.SanPhamDTO;
 import ptithcm.centerservice.Entity.*;
 import ptithcm.centerservice.Repositories.CtSanPhamRepo;
+import ptithcm.centerservice.Services.ChiNhanhService;
 import ptithcm.centerservice.Services.ChiTietSanPhamService;
 import ptithcm.centerservice.Services.LoaiSanPhamService;
 import ptithcm.centerservice.Services.SanPhamService;
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class SanPhamController {
     @Autowired
     private SanPhamService sanPhamService;
+    @Autowired
+    private ChiNhanhService chiNhanhService;
     @Autowired
     private LoaiSanPhamService loaiSanPhamService;
     @Autowired
@@ -83,7 +86,7 @@ public class SanPhamController {
             sanPhamDTO.getLoaiSanPham().setMaLoaiSanPham(ctsanpham.getSanpham().getLoaisanpham().getMaloaisanpham());
             sanPhamDTO.getLoaiSanPham().setTenLoaiSanPham(ctsanpham.getSanpham().getLoaisanpham().getTenloaisanpham());
         }
-        if (!ctsanpham.getSanpham().getHinhanh().isEmpty()) {
+        if (ctsanpham.getSanpham().getHinhanh()!=null&&!ctsanpham.getSanpham().getHinhanh().isEmpty()) {
             sanPhamDTO.setHinhAnh(new ArrayList<>());
             for (Hinhanh item : ctsanpham.getSanpham().getHinhanh()) {
                 sanPhamDTO.getHinhAnh().add(item.getMahinhanh());
@@ -103,17 +106,31 @@ public class SanPhamController {
             Sanpham sp = new Sanpham();
             Ctsanpham ctsanpham = new Ctsanpham();
             CtsanphamPK ctsanphamPK = new CtsanphamPK();
+
             sp.setTensanpham(sanPhamDTO.getTenSanPham());
             sp.setGiahientai(sanPhamDTO.getGiaHienTai());
             sp.setLoaisanpham(loaiSanPhamService.findById(sanPhamDTO.getLoaiSanPham().getMaLoaiSanPham()).orElse(null));
             sp = sanPhamService.save(sp);
             ctsanphamPK.setMasanpham(sp.getMasanpham());
             ctsanphamPK.setMachinhanh(sanPhamDTO.getMaChiNhanh());
+
+            if (!chiNhanhService.existById(sanPhamDTO.getMaChiNhanh())) {
+                return new ResponseEntity<>("Chi nhánh không tồn tại", HttpStatus.BAD_REQUEST);
+            }
+            Chinhanh chinhanh = chiNhanhService.findById(sanPhamDTO.getMaChiNhanh()).get();
+        
             ctsanpham.setId(ctsanphamPK);
+            ctsanpham.setChinhanh(chinhanh);
+            ctsanpham.setSanpham(sp);
+            ctsanpham.setSoluongton(sanPhamDTO.getSoLuongTon());
             chiTietSanPhamService.save(ctsanpham);
             SanPhamDTO sanPhamDTO1 = convertToDTO(ctsanpham);
             return new ResponseEntity<>(sanPhamDTO1, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("....");
+            System.out.println(sanPhamDTO.getMaChiNhanh());
+            
             return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
         }
     }

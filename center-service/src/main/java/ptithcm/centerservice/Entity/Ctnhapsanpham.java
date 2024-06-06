@@ -24,7 +24,7 @@ public class Ctnhapsanpham {
     private BigDecimal dongia;
 
     @ManyToOne
-    @MapsId("madonhap")
+    @MapsId("madonnhap")
     @JoinColumn(name = "MADONNHAP")
     private Donnhaphang donnhaphang;
 

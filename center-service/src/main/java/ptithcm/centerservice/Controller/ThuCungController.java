@@ -70,7 +70,7 @@ public class ThuCungController {
                 thuCungDTO.getGiong().getLoaiThuCung().setTenLoaiThuCung(thucung.getGiong().getLoaithucung().getTenloaithucung());
             }
         }
-        if(!thucung.getHinhanh().isEmpty()){
+        if(thucung.getHinhanh()!=null&&!thucung.getHinhanh().isEmpty()){
             thuCungDTO.setHinhAnh(new ArrayList<>());
             for(Hinhanh item : thucung.getHinhanh()){
                 thuCungDTO.getHinhAnh().add(item.getMahinhanh());
