@@ -4,8 +4,9 @@ import com.example.order_service.DTORequest.*;
 import com.example.order_service.DTOResponse.DonDatDTO;
 import com.example.order_service.DTOResponse.HoaDonDTO;
 import com.example.order_service.Entity.*;
-import com.example.order_service.Repository.CtMuaThuCungRepo;
 import com.example.order_service.Service.*;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/order/dat-hang")
@@ -71,6 +73,11 @@ public class DatHangController {
     public ResponseEntity<?> themSP(@RequestBody List<DonDatSanPhamRequest> list) {
         try {
             for (DonDatSanPhamRequest item : list) {
+                System.out.println(item.getMaChiNhanh());
+                System.out.println(item.getMaDonDat());
+                System.out.println(item.getMaSanPham());
+                System.out.println(item.getSoLuong());
+                System.out.println(item.getDonGia());
                 Ctmuasanpham ctmuasanpham = new Ctmuasanpham();
                 CtmuasanphamPK ctmuasanphamPK = new CtmuasanphamPK();
                 ctmuasanphamPK.setSodondat(item.getMaDonDat());
@@ -79,10 +86,24 @@ public class DatHangController {
                 ctmuasanpham.setId(ctmuasanphamPK);
                 ctmuasanpham.setSoluong(item.getSoLuong());
                 ctmuasanpham.setDongia(item.getDonGia());
+                Optional<Dondat> dondat =donDatService.findById(item.getMaDonDat());
+                if(dondat.isPresent()){
+                Dondat dondat1 = dondat.get();
+                System.out.println(dondat1.getMakhachhang());
+                ctmuasanpham.setDondat(dondat1);
+                ctmuasanpham.setMasanpham(item.getMaSanPham());
+                ctmuasanpham.setMachinhanh(item.getMaChiNhanh());
                 ctmuasanpham = ctMuaSanPhamService.save(ctmuasanpham);
+                }
+                else{
+                    System.out.println("not found");
+                    return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
+                }
+                
             }
             return new ResponseEntity<>("Thêm thành công", HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
         }
     }
@@ -98,10 +119,12 @@ public class DatHangController {
                 ctmuathucung.setId(ctmuathucungPK);
                 ctmuathucung.setDongia(item.getDonGia());
                 ctmuathucung.setSoluong(item.getSoLuong());
+                ctmuathucung.setDondat(donDatService.findById(item.getMaDonDat()).get());
                 ctmuathucung = ctMuaThuCungService.save(ctmuathucung);
             }
             return new ResponseEntity<>("Thêm thành công", HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
         }
     }
@@ -143,9 +166,9 @@ public class DatHangController {
         }
     }
 
-    @GetMapping("/thanhtien")
-    public String thanhtien() {
-        String thanhtien = hoaDonService.tongHoaDon(1L).toString();
+    @GetMapping("/thanhtien/{id}")
+    public String thanhtien(@PathVariable("id")long id) {
+        String thanhtien = hoaDonService.tongHoaDon(id).toString();
         return thanhtien;
     }
 }

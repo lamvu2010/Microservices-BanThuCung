@@ -5,6 +5,8 @@ import com.example.identity_service.DTORequest.RegisterRequest;
 import com.example.identity_service.Email.EmailService;
 import com.example.identity_service.Entity.Khachhang;
 import com.example.identity_service.Entity.Taikhoan;
+
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,11 +54,13 @@ public class TaoTaiKhoanService {
         khachhang.setTen(registerRequest.getTen());
         khachHangService.save(khachhang);
         taikhoan = taiKhoanService.save(taikhoan);
-//        try {
-//            emailService.send(khachhang.getEmail(), "MÃ XÁC NHẬN", taikhoan.getMaxacnhan());
-//        } catch (MessagingException e) {
-//            return "Gửi mail thất bại!";
-//        }
+        //Doan gui email
+    //    try {
+    //        emailService.send(khachhang.getEmail(), "MÃ XÁC NHẬN", taikhoan.getMaxacnhan());
+    //    } catch (MessagingException e) {
+    //        return "Gửi mail thất bại!";
+    //    }
+        System.out.println("Ma xac nhan: "+ taikhoan.getMaxacnhan());
         return taikhoan.getMaxacnhan();
     }
 
@@ -105,11 +109,12 @@ public class TaoTaiKhoanService {
         khachhang.setTen(registerRequest.getTen());
         khachHangService.save(khachhang);
         taikhoan = taiKhoanService.save(taikhoan);
-//        try {
-//            emailService.send(khachhang.getEmail(), "MÃ XÁC NHẬN", taikhoan.getMaxacnhan());
-//        } catch (MessagingException e) {
-//            return "Gửi mail thất bại!";
-//        }
+    //    try {
+    //        emailService.send(khachhang.getEmail(), "MÃ XÁC NHẬN", taikhoan.getMaxacnhan());
+    //    } catch (MessagingException e) {
+    //        return "Gửi mail thất bại!";
+    //    }
+        System.out.println("Ma xac nhan: "+ taikhoan.getMaxacnhan());    
         return taikhoan.getMaxacnhan();
     }
 }

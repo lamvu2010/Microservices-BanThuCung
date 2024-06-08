@@ -40,11 +40,12 @@ public class FPController {
         try {
             String result = quenMatKhauService.sendCode(username);
             return new ResponseEntity<>(result, HttpStatus.OK);
+            //lay ma code xac nhan de so trung trong chuong trinh client
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
+    //hoac dung ham cofirm de xac nhan ma
     @PostMapping("/confirm")
     public ResponseEntity<?> confirm(@RequestBody ConfirmEmailRequest confirmEmailRequest) {
         try {

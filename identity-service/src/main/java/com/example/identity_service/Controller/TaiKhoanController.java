@@ -1,6 +1,7 @@
 package com.example.identity_service.Controller;
 
 import com.example.identity_service.DTOResponse.TaiKhoanDTO;
+import com.example.identity_service.Email.EmailService;
 import com.example.identity_service.Entity.Taikhoan;
 import com.example.identity_service.Service.KhachHangService;
 import com.example.identity_service.Service.NhanVienService;
@@ -23,6 +24,8 @@ public class TaiKhoanController {
     private NhanVienService nhanVienService;
     @Autowired
     private KhachHangService khachHangService;
+    @Autowired
+    private EmailService emailService;
 
     public TaiKhoanDTO convertToDTO(Taikhoan taikhoan){
         TaiKhoanDTO taiKhoanDTO = new TaiKhoanDTO();
@@ -82,6 +85,12 @@ public class TaiKhoanController {
         taikhoan.setMatkhau(UUID.randomUUID().toString().substring(0, 10));
         try{
             taikhoan = taiKhoanService.save(taikhoan);
+            // if(taikhoan.getQuyen().equals("khachhang")){
+            //     emailService.send(khachHangService.findById(taikhoan.getTendangnhap()).get().getEmail(), "MAT KHAU MOI", taikhoan.getMatkhau());
+            // }else{
+            //     emailService.send(nhanVienService.findById(taikhoan.getTendangnhap()).get().getEmail(), "MAT KHAU MOI", taikhoan.getMatkhau());
+            // }
+            System.out.println("MK moi: "+ taikhoan.getMatkhau());
             return new ResponseEntity<>(taikhoan.getMatkhau(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
