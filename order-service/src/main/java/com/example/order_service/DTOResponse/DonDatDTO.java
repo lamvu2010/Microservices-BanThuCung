@@ -16,4 +16,5 @@ public class DonDatDTO {
     private String soDienThoai;
     private Integer maChiNhanh;
     private String maKhachhang;
+    private Boolean trangThai;
 }

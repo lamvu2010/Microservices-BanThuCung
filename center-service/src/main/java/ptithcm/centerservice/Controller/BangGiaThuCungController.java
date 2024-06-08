@@ -9,7 +9,10 @@ import ptithcm.centerservice.DTOResponse.BangGiaThuCungDTO;
 import ptithcm.centerservice.Entity.Banggia;
 import ptithcm.centerservice.Entity.Ctbanggiathucung;
 import ptithcm.centerservice.Entity.CtbanggiathucungPK;
+import ptithcm.centerservice.Entity.Hinhanh;
+import ptithcm.centerservice.Entity.Sanpham;
 import ptithcm.centerservice.Entity.Thucung;
+import ptithcm.centerservice.File.StorageService;
 import ptithcm.centerservice.Services.BangGiaService;
 import ptithcm.centerservice.Services.BangGiaThuCungService;
 import ptithcm.centerservice.Services.ThuCungService;
@@ -29,6 +32,8 @@ public class BangGiaThuCungController {
     ThuCungService thuCungService;
     @Autowired
     BangGiaService bangGiaService;
+    @Autowired
+    StorageService storageService;
 
     @GetMapping
     public ResponseEntity<?> getChiTietBangGiaThuCung() {
@@ -54,6 +59,22 @@ public class BangGiaThuCungController {
                 bangGiaThuCungDTO.setTenThuCung((String) item.get("TENTHUCUNG"));
                 bangGiaThuCungDTO.setMoTa((String) item.get("MOTA"));
                 bangGiaThuCungDTO.setGiaHienTai((BigDecimal) item.get("GIAHIENTAI"));
+                Thucung thucung = thuCungService.findById(bangGiaThuCungDTO.getMaThuCung()).get();
+                List<Hinhanh> hinhanhList = thucung.getHinhanh();
+                if(hinhanhList!=null&&hinhanhList.size()!=0){
+                long idHinhAnh = hinhanhList.get(0).getMahinhanh();
+                try{
+                    byte[] image = storageService.downloadImageFromFileSystem(idHinhAnh);
+                    bangGiaThuCungDTO.setHinhAnh(image);
+
+                }
+                catch(Exception e){
+                    System.out.println(e.getMessage());
+                    bangGiaThuCungDTO.setHinhAnh(null);
+                }}
+                else{
+                    bangGiaThuCungDTO.setHinhAnh(null);
+                }
             }
             if (item.get("MAGIONG") != null) {
                 bangGiaThuCungDTO.setMaGiong((int) item.get("MAGIONG"));

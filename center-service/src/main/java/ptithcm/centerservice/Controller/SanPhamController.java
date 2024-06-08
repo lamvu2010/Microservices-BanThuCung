@@ -128,9 +128,6 @@ public class SanPhamController {
             return new ResponseEntity<>(sanPhamDTO1, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("....");
-            System.out.println(sanPhamDTO.getMaChiNhanh());
-            
             return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
         }
     }

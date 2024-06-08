@@ -79,6 +79,7 @@ public class GioHangService {
                 thuCungDTO.setSoLuongTon((int) item.get("SOLUONGTON"));
                 thuCungDTO.setMoTa((String) item.get("MOTA"));
                 thuCungDTO.setGiaHienTai((BigDecimal) item.get("GIAHIENTAI"));
+                thuCungDTO.setGiaKM((BigDecimal) item.get("GIAKM"));
                 thuCungDTO.setTrangThaiBan((int) item.get("TRANGTHAIBAN"));
             }
             if (item.get("MACHINHANH") != null) {
@@ -119,6 +120,7 @@ public class GioHangService {
                 sanPhamDTO.setMaSanPham(ctsanpham.getSanpham().getMasanpham());
                 sanPhamDTO.setTenSanPham(ctsanpham.getSanpham().getTensanpham());
                 sanPhamDTO.setGiaHienTai(ctsanpham.getSanpham().getGiahientai());
+                sanPhamDTO.setGiaKM((BigDecimal)item.get("GIAKM"));
                 sanPhamDTO.setLoaiSanPham(new LoaiSanPhamDTO());
                 if (ctsanpham.getSanpham().getLoaisanpham() != null) {
                     sanPhamDTO.getLoaiSanPham().setMaLoaiSanPham(ctsanpham.getSanpham().getLoaisanpham().getMaloaisanpham());
