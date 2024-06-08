@@ -70,12 +70,13 @@ public class ThuCungController {
                 thuCungDTO.getGiong().getLoaiThuCung().setTenLoaiThuCung(thucung.getGiong().getLoaithucung().getTenloaithucung());
             }
         }
-        if(!thucung.getHinhanh().isEmpty()){
+        if(thucung.getHinhanh()!=null&&!thucung.getHinhanh().isEmpty()){
             thuCungDTO.setHinhAnh(new ArrayList<>());
             for(Hinhanh item : thucung.getHinhanh()){
                 thuCungDTO.getHinhAnh().add(item.getMahinhanh());
             }
         }
+        thuCungDTO.setSoLuongTon(thuCungDTO.getSoLuongTon());
         return thuCungDTO;
     }
 
@@ -157,6 +158,19 @@ public class ThuCungController {
             return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Xóa thất bại", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/soluongton")
+    public String capNhatSoLuongTon(@RequestBody ThuCungDTO thuCungDTO){
+        System.out.println("Có nhận request");
+        Thucung thucung = thuCungService.findById(thuCungDTO.getMaThuCung()).get();
+        thucung.setSoluongton(thucung.getSoluongton() + thuCungDTO.getSoLuongTon());
+        try{
+            thuCungService.save(thucung);
+            return "Cập nhật thành công";
+        }catch (Exception e){
+            return "Cập nhật thất bại";
         }
     }
 }

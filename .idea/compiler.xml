@@ -8,7 +8,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
-        <module name="indentity-service" />
         <module name="order-service" />
         <module name="center-service" />
         <module name="identity-service" />
@@ -17,6 +16,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Api_BanThuCungOnline" target="17" />
+      <module name="indentity-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

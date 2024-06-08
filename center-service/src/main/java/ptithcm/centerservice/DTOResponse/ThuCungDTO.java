@@ -17,7 +17,9 @@ public class ThuCungDTO {
     private String chu;
     private String moTa;
     private BigDecimal giaHienTai;
+    private BigDecimal giaKM;
     private ChiNhanhDTO chiNhanh;
     private GiongDTO giong;
     private List<Long> hinhAnh;
+    private int soLuongTon;
 }

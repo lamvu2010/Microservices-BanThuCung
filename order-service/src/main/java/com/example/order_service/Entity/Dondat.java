@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,7 +17,7 @@ public class Dondat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "SODONDAT", nullable = false)
-    private long sodondat;
+    private Long sodondat;
 
     @Column(name = "NGAYLAP", nullable = true)
     private Date ngaylap;
@@ -28,8 +28,18 @@ public class Dondat {
     @Column(name = "SODIENTHOAI", nullable = true, length = 15)
     private String sodienthoai;
 
+    @Column(name = "MACHINHANH",nullable = true)
+    private Integer machinhanh;
+
+    @Column(name = "MAKHACHHANG",nullable = true)
+    private String makhachhang;
+
+    @Column(name = "TRANGTHAI",nullable = true)
+    private Boolean trangthai;
+
     @OneToOne
-    @MapsId
+    @MapsId("sodondat")
+    @JoinColumn(name = "SODONDAT")
     private Hoadon hoadon;
 
     @OneToMany(mappedBy = "dondat")

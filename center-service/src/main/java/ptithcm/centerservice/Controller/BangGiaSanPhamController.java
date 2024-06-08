@@ -9,7 +9,9 @@ import ptithcm.centerservice.DTOResponse.BangGiaSanPhamDTO;
 import ptithcm.centerservice.Entity.Banggia;
 import ptithcm.centerservice.Entity.Ctbanggiasanpham;
 import ptithcm.centerservice.Entity.CtbanggiasanphamPK;
+import ptithcm.centerservice.Entity.Hinhanh;
 import ptithcm.centerservice.Entity.Sanpham;
+import ptithcm.centerservice.File.StorageService;
 import ptithcm.centerservice.Services.BangGiaSanPhamService;
 import ptithcm.centerservice.Services.BangGiaService;
 import ptithcm.centerservice.Services.SanPhamService;
@@ -29,6 +31,8 @@ public class BangGiaSanPhamController {
     BangGiaService bangGiaService;
     @Autowired
     SanPhamService sanPhamService;
+    @Autowired
+    private StorageService storageService;
 
     // Lay danh sach san pham ban
     @GetMapping
@@ -45,6 +49,24 @@ public class BangGiaSanPhamController {
                 bangGiaSanPhamDTO.setTenSanPham((String) item.get("TENSANPHAM"));
                 bangGiaSanPhamDTO.setGiaHienTai((BigDecimal) item.get("GIAHIENTAI"));
                 bangGiaSanPhamDTO.setSoLuongTon((long) item.get("SOLUONGTON"));
+                Sanpham sanpham = sanPhamService.findById(bangGiaSanPhamDTO.getMaSanPham()).get();
+                List<Hinhanh> hinhanhList = sanpham.getHinhanh();
+                if(hinhanhList!=null&&hinhanhList.size()!=0){
+                    long idHinhAnh = hinhanhList.get(0).getMahinhanh();
+                    try{
+                        byte[] image = storageService.downloadImageFromFileSystem(idHinhAnh);
+                        bangGiaSanPhamDTO.setHinhAnh(image);
+
+                    }
+                    catch(Exception e){
+                        System.out.println(e.getMessage());
+                        bangGiaSanPhamDTO.setHinhAnh(null);
+                    }
+                }
+                else{
+                    bangGiaSanPhamDTO.setHinhAnh(null);
+                }
+                
             }
             if (item.get("MALOAISANPHAM") != null) {
                 bangGiaSanPhamDTO.setMaLoaiSanPham((int) item.get("MALOAISANPHAM"));
@@ -84,6 +106,7 @@ public class BangGiaSanPhamController {
             }
             return new ResponseEntity<>("Cập nhật thành công",HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
         }
     }

@@ -23,4 +23,5 @@ public class BangGiaThuCungDTO {
     private String tenGiong;
     private BigDecimal giaHienTai;
     private BigDecimal giaKhuyenMai;
+    private byte[] hinhAnh;
 }

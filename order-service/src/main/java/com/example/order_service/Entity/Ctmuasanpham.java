@@ -24,7 +24,12 @@ public class Ctmuasanpham {
 
     @ManyToOne
     @MapsId("sodondat")
-    @JoinColumn(name = "SOLUONGDAT")
+    @JoinColumn(name = "SODONDAT")
     private Dondat dondat;
 
+    @Column(name = "MASANPHAM",insertable = false,updatable = false)
+    private long masanpham;
+
+    @Column(name = "MACHINHANH",insertable = false, updatable = false)
+    private int machinhanh;
 }
