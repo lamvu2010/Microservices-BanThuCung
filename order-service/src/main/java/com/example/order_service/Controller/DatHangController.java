@@ -42,10 +42,14 @@ public class DatHangController {
         List<Hoadon> list = hoaDonService.findAll();
         List<HoaDonDTO> dtoList = new ArrayList<>();
         for (Hoadon item : list) {
+            Dondat dondat = donDatService.findById(item.getSohoadon()).get();
+            DonDatDTO donDatDTO = donDatService.convertToDTO(dondat);
             HoaDonDTO hoaDonDTO = new HoaDonDTO();
+            hoaDonDTO.setDonDat(donDatDTO);
             hoaDonDTO.setMaHoaDon(item.getSohoadon());
             hoaDonDTO.setNgayLap(item.getNgaylap());
             hoaDonDTO.setTongHoaDon(item.getTonghoadon());
+            hoaDonDTO.setMaNhanVien(item.getManhanvien());
             dtoList.add(hoaDonDTO);
         }
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
@@ -60,12 +64,13 @@ public class DatHangController {
         if (dondat != null && hoadon != null) {
             donDatDTO = donDatService.convertToDTO(dondat);
             hoaDonDTO.setDonDat(donDatDTO);
-            hoaDonDTO.setTenNhanVien(hoadon.getManhanvien());
+            hoaDonDTO.setMaNhanVien(hoadon.getManhanvien());
             hoaDonDTO.setNgayLap(hoadon.getNgaylap());
             hoaDonDTO.setTongHoaDon(hoadon.getTonghoadon());
+            hoaDonDTO.setMaHoaDon(hoaDonDTO.getMaHoaDon());
             return new ResponseEntity<>(hoaDonDTO, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Không tìm thấy hóa đơn, đơn đặt",HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("Không tìm thấy hóa đơn, đơn đặt", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -73,11 +78,6 @@ public class DatHangController {
     public ResponseEntity<?> themSP(@RequestBody List<DonDatSanPhamRequest> list) {
         try {
             for (DonDatSanPhamRequest item : list) {
-                System.out.println(item.getMaChiNhanh());
-                System.out.println(item.getMaDonDat());
-                System.out.println(item.getMaSanPham());
-                System.out.println(item.getSoLuong());
-                System.out.println(item.getDonGia());
                 Ctmuasanpham ctmuasanpham = new Ctmuasanpham();
                 CtmuasanphamPK ctmuasanphamPK = new CtmuasanphamPK();
                 ctmuasanphamPK.setSodondat(item.getMaDonDat());
@@ -86,20 +86,26 @@ public class DatHangController {
                 ctmuasanpham.setId(ctmuasanphamPK);
                 ctmuasanpham.setSoluong(item.getSoLuong());
                 ctmuasanpham.setDongia(item.getDonGia());
-                Optional<Dondat> dondat =donDatService.findById(item.getMaDonDat());
-                if(dondat.isPresent()){
-                Dondat dondat1 = dondat.get();
-                System.out.println(dondat1.getMakhachhang());
-                ctmuasanpham.setDondat(dondat1);
-                ctmuasanpham.setMasanpham(item.getMaSanPham());
-                ctmuasanpham.setMachinhanh(item.getMaChiNhanh());
-                ctmuasanpham = ctMuaSanPhamService.save(ctmuasanpham);
+
+                Optional<Dondat> dondat = donDatService.findById(item.getMaDonDat());
+
+                if (dondat.isPresent()) {
+                    Dondat dondat1 = dondat.get();
+                    System.out.println(dondat1.getMakhachhang());
+                    ctmuasanpham.setDondat(dondat1);
+                    ctmuasanpham.setMasanpham(item.getMaSanPham());
+                    ctmuasanpham.setMachinhanh(item.getMaChiNhanh());
+
+                    try {
+                        ctmuasanpham = ctMuaSanPhamService.save(ctmuasanpham);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return new ResponseEntity<>("Thêm thất bại: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    System.out.println("Dondat not found");
+                    return new ResponseEntity<>("Thêm thất bại: Dondat không tìm thấy", HttpStatus.BAD_REQUEST);
                 }
-                else{
-                    System.out.println("not found");
-                    return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
-                }
-                
             }
             return new ResponseEntity<>("Thêm thành công", HttpStatus.OK);
         } catch (Exception e) {
@@ -144,7 +150,6 @@ public class DatHangController {
             Dondat dondat = donDatService.findById(hoaDonRequest.getSoHoaDon()).get();
             dondat.setTrangthai(Boolean.TRUE);
             dondat = donDatService.save(dondat);
-            System.out.println("Chạy vào try");
             for (Ctmuasanpham item : dondat.getCtmuasanpham()) {
                 SoLuongSanPhamRequest soLuongSanPhamRequest = new SoLuongSanPhamRequest();
                 soLuongSanPhamRequest.setMaChiNhanh(item.getId().getMachinhanh());
@@ -167,7 +172,7 @@ public class DatHangController {
     }
 
     @GetMapping("/thanhtien/{id}")
-    public String thanhtien(@PathVariable("id")long id) {
+    public String thanhtien(@PathVariable("id") long id) {
         String thanhtien = hoaDonService.tongHoaDon(id).toString();
         return thanhtien;
     }

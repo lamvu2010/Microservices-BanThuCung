@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class DonDatController {
         Dondat dondat = new Dondat();
         dondat.setDiachidat(donDatDTO.getDiaChi());
         dondat.setMachinhanh(donDatDTO.getMaChiNhanh());
-        dondat.setNgaylap(donDatDTO.getNgayLap());
+        dondat.setNgaylap(Timestamp.valueOf(LocalDateTime.now()));
         dondat.setMakhachhang(donDatDTO.getMaKhachhang());
         dondat.setSodienthoai(donDatDTO.getSoDienThoai());
         dondat.setTrangthai(Boolean.FALSE);

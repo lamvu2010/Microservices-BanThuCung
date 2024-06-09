@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Dondat {
     private Long sodondat;
 
     @Column(name = "NGAYLAP", nullable = true)
-    private Date ngaylap;
+    private Timestamp ngaylap;
 
     @Column(name = "DIACHIDAT", nullable = true, length = 50)
     private String diachidat;
@@ -36,11 +37,6 @@ public class Dondat {
 
     @Column(name = "TRANGTHAI",nullable = true)
     private Boolean trangthai;
-
-    @OneToOne
-    @MapsId("sodondat")
-    @JoinColumn(name = "SODONDAT")
-    private Hoadon hoadon;
 
     @OneToMany(mappedBy = "dondat")
     private List<Ctmuasanpham> ctmuasanpham;

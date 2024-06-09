@@ -26,7 +26,4 @@ public class Hoadon {
 
     @Column(name = "MANHANVIEN",nullable = true)
     private String manhanvien;
-
-    @OneToOne(mappedBy = "hoadon")
-    private Dondat dondat;
 }
