@@ -1,5 +1,6 @@
 package ptithcm.centerservice.Controller;
 
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import ptithcm.centerservice.Services.ChiNhanhService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/center/banggia")
@@ -52,6 +54,19 @@ public class BangGiaController {
             dtoList.add(bangGiaDTO);
         }
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/apply/{id}")
+    public ResponseEntity<?> apply(@PathVariable long id){
+        bangGiaService.updateBangGia();
+        if(!bangGiaService.isExistsById(id)){
+            return new ResponseEntity<>("Mã bảng giá không tồn tại!",HttpStatus.BAD_REQUEST);
+        }
+        Banggia banggia = bangGiaService.findById(id).get();
+        banggia.setTrangthai(Boolean.TRUE);
+        banggia = bangGiaService.save(banggia);
+        BangGiaDTO bangGiaDTO = convertToDTO(banggia);
+        return new ResponseEntity<>(bangGiaDTO,HttpStatus.OK);
     }
 
     // Them bang gia

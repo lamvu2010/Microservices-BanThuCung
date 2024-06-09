@@ -16,5 +16,4 @@ public class HoaDonDTO {
     private Timestamp ngayLap;
     private BigDecimal tongHoaDon;
     private String maNhanVien;
-    private String tenNhanVien;
 }
