@@ -57,6 +57,7 @@ public class ChiNhanhController {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody String tenChiNhanh) {
+        tenChiNhanh = tenChiNhanh.replace("\"", "");
         if (chiNhanhService.existsByTenChiNhanh(tenChiNhanh)) {
             return new ResponseEntity<>("Entity is existed", HttpStatus.CONFLICT);
         }
