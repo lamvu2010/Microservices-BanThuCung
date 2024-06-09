@@ -46,6 +46,7 @@ public class DonDatService {
         donDatDTO.setMaKhachhang(dondat.getMakhachhang());
         donDatDTO.setSoDienThoai(dondat.getSodienthoai());
         donDatDTO.setMaChiNhanh(dondat.getMachinhanh());
+        donDatDTO.setTrangThai(dondat.getTrangthai());
         return donDatDTO;
     }
 }

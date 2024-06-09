@@ -13,22 +13,31 @@ public class BangGiaService {
     @Autowired
     BangGiaRepo bangGiaRepo;
 
-    public Banggia save(Banggia banggia){
+    public Banggia save(Banggia banggia) {
         return bangGiaRepo.save(banggia);
     }
-    public List<Banggia> findAll(){
+
+    public List<Banggia> findAll() {
         return bangGiaRepo.findAll();
     }
-    public Optional<Banggia> findById(long id){
+
+    public Optional<Banggia> findById(long id) {
         return bangGiaRepo.findById(id);
     }
-    public void delete(Banggia banggia){
+
+    public void delete(Banggia banggia) {
         bangGiaRepo.delete(banggia);
     }
-    public void deleteById(long id){
+
+    public void deleteById(long id) {
         bangGiaRepo.deleteById(id);
     }
-    public boolean isExistsById(long id){
+
+    public boolean isExistsById(long id) {
         return bangGiaRepo.existsById(id);
+    }
+
+    public void updateBangGia() {
+        bangGiaRepo.updateTrangThaiToFalse();
     }
 }

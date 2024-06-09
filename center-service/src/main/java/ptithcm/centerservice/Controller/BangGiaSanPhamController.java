@@ -56,7 +56,6 @@ public class BangGiaSanPhamController {
                     try{
                         byte[] image = storageService.downloadImageFromFileSystem(idHinhAnh);
                         bangGiaSanPhamDTO.setHinhAnh(image);
-
                     }
                     catch(Exception e){
                         System.out.println(e.getMessage());

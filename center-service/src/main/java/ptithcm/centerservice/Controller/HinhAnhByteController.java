@@ -57,7 +57,5 @@ public class HinhAnhByteController {
             System.out.println(e.getMessage());
             return new ResponseEntity<>("Lỗi lấy hình", HttpStatus.BAD_REQUEST);
         }
-
     }
-
 }

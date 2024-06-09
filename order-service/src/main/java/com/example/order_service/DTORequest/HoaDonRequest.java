@@ -12,6 +12,5 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class HoaDonRequest {
     private long soHoaDon;
-    private Timestamp ngayLap;
     private String maNhanVien;
 }
