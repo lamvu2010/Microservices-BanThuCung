@@ -7,10 +7,7 @@ import com.example.order_service.Service.DonDatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +39,7 @@ public class DonDatController {
 
     // nhớ thêm tự động tăng so don dat trong db
     @PostMapping
-    public ResponseEntity<?> insert(DonDatDTO donDatDTO) {
+    public ResponseEntity<?> insert(@RequestBody DonDatDTO donDatDTO) {
         Dondat dondat = new Dondat();
         dondat.setDiachidat(donDatDTO.getDiaChi());
         dondat.setMachinhanh(donDatDTO.getMaChiNhanh());
