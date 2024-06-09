@@ -1,7 +1,11 @@
 package com.example.identity_service.Service;
 
 import com.example.identity_service.DTORequest.ConfirmEmailRequest;
+import com.example.identity_service.Email.EmailService;
 import com.example.identity_service.Entity.Taikhoan;
+import com.netflix.discovery.converters.Auto;
+
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,12 @@ import java.util.UUID;
 public class QuenMatKhauService {
     @Autowired
     private TaiKhoanService taiKhoanService;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private NhanVienService nhanVienService;
+    @Autowired
+    private KhachHangService khachHangService;
 
     @Transactional
     public String sendCode(String username) {
@@ -25,11 +35,16 @@ public class QuenMatKhauService {
         taikhoan.setThoigiantaoma(LocalDateTime.now());
         taikhoan.setThoigianhethan(LocalDateTime.now().plusMinutes(5));
         taikhoan = taiKhoanService.save(taikhoan);
-//        try {
-//            emailService.send(khachhang.getEmail(), "MÃ XÁC NHẬN", taikhoan.getMaxacnhan());
-//        } catch (MessagingException e) {
-//            return "Gửi mail thất bại!";
-//        }
+        //Doan gui email
+    //    try { 
+    //     if(taikhoan.getQuyen().equals("khachhang")){
+    //     emailService.send(khachHangService.findById(taikhoan.getTendangnhap()).get().getEmail(), "Ma xac nhan", uuid);
+    //     }else{
+    //     emailService.send(nhanVienService.findById(taikhoan.getTendangnhap()).get().getEmail(), "Ma xac nhan", uuid);
+    //     }
+    //    } catch (MessagingException e) {
+    //        return "Gửi mail thất bại!";
+    //    }
         System.out.println(taikhoan.getMaxacnhan());
         return taikhoan.getMaxacnhan();
     }
@@ -41,9 +56,6 @@ public class QuenMatKhauService {
         }
         Taikhoan taikhoan = taiKhoanService.findBytendangnhap(confirmEmailRequest.getTenDangNhap());
         String verifiedCode = confirmEmailRequest.getMaXacNhan();
-        if (taikhoan.getThoigianxacnhan() != null) {
-            throw new IllegalStateException("Tài khoản đã được xác nhận");
-        }
         LocalDateTime thoiGianHetHan = taikhoan.getThoigianhethan();
         if (thoiGianHetHan.isBefore(LocalDateTime.now())) {
             throw new IllegalStateException("Mã xác nhận hết hạn");

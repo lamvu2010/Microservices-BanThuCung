@@ -8,6 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +38,7 @@ public class DonDatController {
             donDatDTO.setSoDienThoai(item.getSodienthoai());
             donDatDTO.setMaKhachhang(item.getMakhachhang());
             donDatDTO.setMaChiNhanh(item.getMachinhanh());
+            donDatDTO.setTrangThai(item.getTrangthai());
             dtoList.add(donDatDTO);
         }
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
@@ -49,9 +56,22 @@ public class DonDatController {
         dondat.setTrangthai(Boolean.FALSE);
         try {
             dondat = donDatService.save(dondat);
-            return new ResponseEntity<>(dondat, HttpStatus.OK);
+            DonDatDTO donDatDTO2 = donDatService.convertToDTO(dondat);
+            return new ResponseEntity<>(donDatDTO2, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Thêm thất bại", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody DonDatDTO donDatDTO) {
+        Dondat dondat = new Dondat();
+        dondat.setTrangthai(donDatDTO.getTrangThai());
+        try {
+            dondat = donDatService.save(dondat);
+            return new ResponseEntity<>(dondat, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Sửa thất bại", HttpStatus.BAD_REQUEST);
         }
     }
 }

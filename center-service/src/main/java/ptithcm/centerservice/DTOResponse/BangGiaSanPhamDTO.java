@@ -24,4 +24,9 @@ public class BangGiaSanPhamDTO {
     private BigDecimal giaHienTai;
     private BigDecimal giaKhuyenMai;
     private long soLuongTon;
+<<<<<<< HEAD
 }
+=======
+    private byte[] hinhAnh;
+} 
+>>>>>>> ba612d0e77974d1accf47eb9b1bfdbcf6063ae6d
