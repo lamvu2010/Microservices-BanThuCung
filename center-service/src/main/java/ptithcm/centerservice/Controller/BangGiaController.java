@@ -58,13 +58,17 @@ public class BangGiaController {
 
     @GetMapping("/apply/{id}")
     public ResponseEntity<?> apply(@PathVariable long id){
-        bangGiaService.updateBangGia();
         if(!bangGiaService.isExistsById(id)){
             return new ResponseEntity<>("Mã bảng giá không tồn tại!",HttpStatus.BAD_REQUEST);
         }
-        Banggia banggia = bangGiaService.findById(id).get();
+        Banggia banggia = bangGiaService.findById(id).get();//Lấy bảng giá ban đầu
+        int machinhanh = banggia.getChinhanh().getMachinhanh();
+        long mabanggia = banggia.getMabanggia();
         banggia.setTrangthai(Boolean.TRUE);
         banggia = bangGiaService.save(banggia);
+
+        bangGiaService.updateBangGia(machinhanh, mabanggia);
+        
         BangGiaDTO bangGiaDTO = convertToDTO(banggia);
         return new ResponseEntity<>(bangGiaDTO,HttpStatus.OK);
     }
