@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ptithcm.centerservice.DTORequest.BangGiaThuCungRequest;
 import ptithcm.centerservice.DTOResponse.BangGiaThuCungDTO;
 import ptithcm.centerservice.Entity.Banggia;
+import ptithcm.centerservice.Entity.Ctbanggiasanpham;
+import ptithcm.centerservice.Entity.CtbanggiasanphamPK;
 import ptithcm.centerservice.Entity.Ctbanggiathucung;
 import ptithcm.centerservice.Entity.CtbanggiathucungPK;
 import ptithcm.centerservice.Entity.Hinhanh;
@@ -106,6 +108,32 @@ public class BangGiaThuCungController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> insert(@RequestBody long maBangGia) {
+        if(maBangGia==0){
+            return new ResponseEntity<>("Không nhận được mã bảng giá", HttpStatus.BAD_REQUEST);
+        }
+        Banggia banggia = bangGiaService.findById(maBangGia).orElse(null);
+        int maChiNhanh = banggia.getChinhanh().getMachinhanh();
+        try {
+            List<Thucung> list = thuCungService.findAll();
+            for(Thucung item: list){
+                if(item.getChinhanh().getMachinhanh()!=maChiNhanh)continue;
+                CtbanggiathucungPK ctbanggiathucungPK = new CtbanggiathucungPK(maBangGia, item.getMathucung());
+                Ctbanggiathucung ctbanggiathucung = new Ctbanggiathucung();
+                ctbanggiathucung.setId(ctbanggiathucungPK);
+                ctbanggiathucung.setDongia(item.getGiahientai());
+                ctbanggiathucung.setThucung(item);
+                ctbanggiathucung.setBanggia(banggia);
+                bangGiaThuCungService.save(ctbanggiathucung);
+            }
+            return new ResponseEntity<>("Upload thành công",HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Upload thất bại", HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -9,11 +9,13 @@ import ptithcm.centerservice.DTOResponse.BangGiaSanPhamDTO;
 import ptithcm.centerservice.Entity.Banggia;
 import ptithcm.centerservice.Entity.Ctbanggiasanpham;
 import ptithcm.centerservice.Entity.CtbanggiasanphamPK;
+import ptithcm.centerservice.Entity.Ctsanpham;
 import ptithcm.centerservice.Entity.Hinhanh;
 import ptithcm.centerservice.Entity.Sanpham;
 import ptithcm.centerservice.File.StorageService;
 import ptithcm.centerservice.Services.BangGiaSanPhamService;
 import ptithcm.centerservice.Services.BangGiaService;
+import ptithcm.centerservice.Services.ChiTietSanPhamService;
 import ptithcm.centerservice.Services.SanPhamService;
 
 import java.math.BigDecimal;
@@ -31,6 +33,8 @@ public class BangGiaSanPhamController {
     BangGiaService bangGiaService;
     @Autowired
     SanPhamService sanPhamService;
+    @Autowired
+    ChiTietSanPhamService chiTietSanPhamService;
     @Autowired
     private StorageService storageService;
 
@@ -107,6 +111,33 @@ public class BangGiaSanPhamController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> insert(@RequestBody long maBangGia) {
+        if(maBangGia==0){
+            return new ResponseEntity<>("Không nhận được mã bảng giá", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            Banggia banggia = bangGiaService.findById(maBangGia).orElse(null);
+            List<Ctsanpham> list = chiTietSanPhamService.findAll();
+            int maChiNhanh = banggia.getChinhanh().getMachinhanh();
+            for(Ctsanpham item: list){
+                if(item.getChinhanh().getMachinhanh()!=maChiNhanh)continue;
+
+                CtbanggiasanphamPK ctbanggiasanphamPK = new CtbanggiasanphamPK(maBangGia,item.getSanpham().getMasanpham());
+                Ctbanggiasanpham ctbanggiasanpham = new Ctbanggiasanpham();
+                ctbanggiasanpham.setId(ctbanggiasanphamPK);
+                ctbanggiasanpham.setDongia(item.getDongia());
+                ctbanggiasanpham.setBanggia(banggia);
+                ctbanggiasanpham.setSanpham(item.getSanpham());
+                bangGiaSanPhamService.save(ctbanggiasanpham);
+            }
+            return new ResponseEntity<>("Upload thành công",HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Upload thất bại", HttpStatus.BAD_REQUEST);
         }
     }
 }
