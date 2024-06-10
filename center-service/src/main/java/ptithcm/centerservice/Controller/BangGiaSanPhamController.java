@@ -129,7 +129,7 @@ public class BangGiaSanPhamController {
                 CtbanggiasanphamPK ctbanggiasanphamPK = new CtbanggiasanphamPK(maBangGia,item.getSanpham().getMasanpham());
                 Ctbanggiasanpham ctbanggiasanpham = new Ctbanggiasanpham();
                 ctbanggiasanpham.setId(ctbanggiasanphamPK);
-                ctbanggiasanpham.setDongia(item.getDongia());
+                ctbanggiasanpham.setDongia(item.getSanpham().getGiahientai());
                 ctbanggiasanpham.setBanggia(banggia);
                 ctbanggiasanpham.setSanpham(item.getSanpham());
                 bangGiaSanPhamService.save(ctbanggiasanpham);
