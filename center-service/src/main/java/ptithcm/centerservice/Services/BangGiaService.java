@@ -37,7 +37,7 @@ public class BangGiaService {
         return bangGiaRepo.existsById(id);
     }
 
-    public void updateBangGia() {
-        bangGiaRepo.updateTrangThaiToFalse();
+    public void updateBangGia(int machinhanh, long mabanggia) {
+        bangGiaRepo.updateTrangThaiToFalse(machinhanh, mabanggia);
     }
 }
