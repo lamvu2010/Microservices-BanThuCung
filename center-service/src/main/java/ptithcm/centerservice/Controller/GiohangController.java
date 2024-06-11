@@ -100,7 +100,8 @@ public class GiohangController {
             return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
         }
         catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Xóa thất bại",HttpStatus.BAD_REQUEST);
         }
     }
 }
