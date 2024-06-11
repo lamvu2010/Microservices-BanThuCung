@@ -67,7 +67,7 @@ public class DatHangController {
             hoaDonDTO.setMaNhanVien(hoadon.getManhanvien());
             hoaDonDTO.setNgayLap(hoadon.getNgaylap());
             hoaDonDTO.setTongHoaDon(hoadon.getTonghoadon());
-            hoaDonDTO.setMaHoaDon(hoaDonDTO.getMaHoaDon());
+            hoaDonDTO.setMaHoaDon(hoadon.getSohoadon());
             return new ResponseEntity<>(hoaDonDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Không tìm thấy hóa đơn, đơn đặt", HttpStatus.BAD_REQUEST);
