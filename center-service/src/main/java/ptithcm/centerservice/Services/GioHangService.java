@@ -141,4 +141,30 @@ public class GioHangService {
         }
         return sanPhamDTOList;
     }
+
+    @Transactional
+    public void deleteByIdThuCung(GhthucungPK ghthucungPK){
+        ghThuCungRepo.deleteById(ghthucungPK);
+    }
+
+    public boolean isExistsByIdThuCung(GhthucungPK ghthucungPK){
+        return ghThuCungRepo.existsById(ghthucungPK);
+    }
+
+    @Transactional
+    public void deleteByIdSanPham(GhsanphamPK ghsanphamPK){
+        ghSanPhamRepo.deleteById(ghsanphamPK);
+    }
+
+    public boolean isExistsByIdSanPham(GhsanphamPK ghsanphamPK){
+        return ghSanPhamRepo.existsById(ghsanphamPK);
+    }
+
+    public void xoaGioHangThuCung(String makhachhang, int machinhanh) {
+        ghThuCungRepo.xoaGioHangThuCung(makhachhang, machinhanh);
+    }
+
+    public void xoaGioHangSanPham(String makhachhang, int machinhanh) {
+        ghSanPhamRepo.xoaGioHangSanPham(makhachhang, machinhanh);
+    }
 }
