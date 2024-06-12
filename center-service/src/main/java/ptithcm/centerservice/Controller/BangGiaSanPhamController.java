@@ -90,6 +90,57 @@ public class BangGiaSanPhamController {
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
+    @GetMapping("/bang-gia")
+    public ResponseEntity<?> getDanhSachSanPhamBanQuanLy() {
+        List<Map<?, ?>> list = bangGiaSanPhamService.danhSachSanPhamBanQuanLy();
+        List<BangGiaSanPhamDTO> dtoList = new ArrayList<>();
+        if (list.isEmpty()) {
+            return new ResponseEntity<>("Không có dữ liệu", HttpStatus.BAD_REQUEST);
+        }
+        for (Map<?, ?> item : list) {
+            BangGiaSanPhamDTO bangGiaSanPhamDTO = new BangGiaSanPhamDTO();
+            if (item.get("MASANPHAM") != null) {
+                bangGiaSanPhamDTO.setMaSanPham((long) item.get("MASANPHAM"));
+                bangGiaSanPhamDTO.setTenSanPham((String) item.get("TENSANPHAM"));
+                bangGiaSanPhamDTO.setGiaHienTai((BigDecimal) item.get("GIAHIENTAI"));
+                bangGiaSanPhamDTO.setSoLuongTon((long) item.get("SOLUONGTON"));
+                Sanpham sanpham = sanPhamService.findById(bangGiaSanPhamDTO.getMaSanPham()).get();
+                List<Hinhanh> hinhanhList = sanpham.getHinhanh();
+                if(hinhanhList!=null&&hinhanhList.size()!=0){
+                    long idHinhAnh = hinhanhList.get(0).getMahinhanh();
+                    try{
+                        byte[] image = storageService.downloadImageFromFileSystem(idHinhAnh);
+                        bangGiaSanPhamDTO.setHinhAnh(image);
+                    }
+                    catch(Exception e){
+                        System.out.println(e.getMessage());
+                        bangGiaSanPhamDTO.setHinhAnh(null);
+                    }
+                }
+                else{
+                    bangGiaSanPhamDTO.setHinhAnh(null);
+                }
+                
+            }
+            if (item.get("MALOAISANPHAM") != null) {
+                bangGiaSanPhamDTO.setMaLoaiSanPham((int) item.get("MALOAISANPHAM"));
+                bangGiaSanPhamDTO.setTenLoaiSanPham((String) item.get("TENLOAISANPHAM"));
+            }
+            if (item.get("MABANGGIA") != null) {
+                bangGiaSanPhamDTO.setMaBangGia((long) item.get("MABANGGIA"));
+                bangGiaSanPhamDTO.setThoiGianBatDau((Timestamp) item.get("THOIGIANBATDAU"));
+                bangGiaSanPhamDTO.setThoiGianKetThuc((Timestamp) item.get("THOIGIANKETTHUC"));
+                bangGiaSanPhamDTO.setGiaKhuyenMai((BigDecimal) item.get("GIAKM"));
+            }
+            if (item.get("MACHINHANH") != null) {
+                bangGiaSanPhamDTO.setMaChiNhanh((int) item.get("MACHINHANH"));
+                bangGiaSanPhamDTO.setTenChiNhanh((String) item.get("TENCHINHANH"));
+            }
+            dtoList.add(bangGiaSanPhamDTO);
+        }
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> update(@RequestBody List<BangGiaSanPhamRequest> bangGiaSanPhamRequests) {
         try {
