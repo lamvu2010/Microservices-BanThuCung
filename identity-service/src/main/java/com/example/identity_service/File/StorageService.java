@@ -25,7 +25,7 @@ public class StorageService {
     private KhachHangRepo khachHangRepo;
 
 
-    private final String FOLDER_PATH = "D:\\Project\\Microservices-BanThuCung\\identity-service\\src\\main\\java\\com\\example\\identity_service\\HinhAnh/";
+    private final String FOLDER_PATH = "D:\\Project\\Microservices-BanThuCung\\identity-service\\src\\main\\java\\com\\example\\identity_service\\HinhAnh\\";
 
     // lưu ảnh từ multipart về file system
     @Transactional
