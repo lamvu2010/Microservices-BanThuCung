@@ -60,6 +60,58 @@ public class BangGiaThuCungController {
                 bangGiaThuCungDTO.setMaThuCung((long) item.get("MATHUCUNG"));
                 bangGiaThuCungDTO.setTenThuCung((String) item.get("TENTHUCUNG"));
                 bangGiaThuCungDTO.setMoTa((String) item.get("MOTA"));
+                bangGiaThuCungDTO.setSoLuongTon((int)item.get("SOLUONGTON"));
+                bangGiaThuCungDTO.setGiaHienTai((BigDecimal) item.get("GIAHIENTAI"));
+                Thucung thucung = thuCungService.findById(bangGiaThuCungDTO.getMaThuCung()).get();
+                List<Hinhanh> hinhanhList = thucung.getHinhanh();
+                if(hinhanhList!=null&&hinhanhList.size()!=0){
+                long idHinhAnh = hinhanhList.get(0).getMahinhanh();
+                try{
+                    byte[] image = storageService.downloadImageFromFileSystem(idHinhAnh);
+                    bangGiaThuCungDTO.setHinhAnh(image);
+
+                }
+                catch(Exception e){
+                    System.out.println(e.getMessage());
+                    bangGiaThuCungDTO.setHinhAnh(null);
+                }}
+                else{
+                    bangGiaThuCungDTO.setHinhAnh(null);
+                }
+            }
+            if (item.get("MAGIONG") != null) {
+                bangGiaThuCungDTO.setMaGiong((int) item.get("MAGIONG"));
+                bangGiaThuCungDTO.setTenGiong((String) item.get("TENGIONG"));
+            }
+            dtoList.add(bangGiaThuCungDTO);
+        }
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/bang-gia")
+    public ResponseEntity<?> getChiTietBangGiaThuCungQuanLy() {
+        List<Map<?, ?>> result = bangGiaThuCungService.danhSachThuCungBanQuanLy();
+        if (result.isEmpty()) {
+            return new ResponseEntity<>("Không có dữ liệu", HttpStatus.BAD_REQUEST);
+        }
+        List<BangGiaThuCungDTO> dtoList = new ArrayList<>();
+        for (Map<?, ?> item : result) {
+            BangGiaThuCungDTO bangGiaThuCungDTO = new BangGiaThuCungDTO();
+            if (item.get("MABANGGIA") != null) {
+                bangGiaThuCungDTO.setMaBangGia((long) item.get("MABANGGIA"));
+                bangGiaThuCungDTO.setThoiGianBatDau((Timestamp) item.get("THOIGIANBATDAU"));
+                bangGiaThuCungDTO.setThoiGianKetThuc((Timestamp) item.get("THOIGIANKETTHUC"));
+                bangGiaThuCungDTO.setGiaKhuyenMai((BigDecimal) item.get("GIAKM"));
+            }
+            if (item.get("MACHINHANH") != null) {
+                bangGiaThuCungDTO.setMaChiNhanh((int) item.get("MACHINHANH"));
+                bangGiaThuCungDTO.setTenChiNhanh((String) item.get("TENCHINHANH"));
+            }
+            if (item.get("MATHUCUNG") != null) {
+                bangGiaThuCungDTO.setMaThuCung((long) item.get("MATHUCUNG"));
+                bangGiaThuCungDTO.setTenThuCung((String) item.get("TENTHUCUNG"));
+                bangGiaThuCungDTO.setMoTa((String) item.get("MOTA"));
+                bangGiaThuCungDTO.setSoLuongTon((int)item.get("SOLUONGTON"));
                 bangGiaThuCungDTO.setGiaHienTai((BigDecimal) item.get("GIAHIENTAI"));
                 Thucung thucung = thuCungService.findById(bangGiaThuCungDTO.getMaThuCung()).get();
                 List<Hinhanh> hinhanhList = thucung.getHinhanh();

@@ -38,4 +38,8 @@ public class BangGiaSanPhamService {
     public List<Map<?,?>> danhSachSanPhamBan(){
         return ctBangGiaSanPhamRepo.danhSachSanPhamBan();
     }
+
+    public List<Map<?,?>> danhSachSanPhamBanQuanLy(){
+        return ctBangGiaSanPhamRepo.danhSachSanPhamBanQuanLy();
+    }
 }
