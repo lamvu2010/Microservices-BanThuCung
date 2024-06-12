@@ -55,6 +55,20 @@ public class SanPhamController {
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
+    @GetMapping("/{sanpham}/{chinhanh}")
+    public ResponseEntity<?> findById(@PathVariable Long sanpham,@PathVariable int chinhanh) {
+        CtsanphamPK ctsanphamPK = new CtsanphamPK(chinhanh,sanpham);
+        boolean spTonTai = chiTietSanPhamService.existsById(ctsanphamPK);
+        if (spTonTai == false) {
+            return new ResponseEntity<>("Id khong ton tai", HttpStatus.NOT_FOUND);
+        }
+        Optional<Ctsanpham> ctsanpham = chiTietSanPhamService.findById(ctsanphamPK);
+        SanPhamDTO sanPhamDTO = convertToDTO(ctsanpham.orElse(null));
+        return new ResponseEntity<>(sanPhamDTO, HttpStatus.OK);
+    }
+
+
+
     // List san pham to list sanphamDTO
 //    public List<SanPhamDTO> sanPhamDTO(List<Sanpham> list) {
 //        List<SanPhamDTO> listJson = new ArrayList<>();

@@ -15,6 +15,10 @@ public class BangGiaThuCungService {
         return ctBangGiaThuCungRepo.danhSachThuCungBan();
     }
 
+    public List<Map<?,?>> danhSachThuCungBanQuanLy(){
+        return ctBangGiaThuCungRepo.danhSachThuCungBanQuanLy();
+    }
+
     public Ctbanggiathucung save(Ctbanggiathucung ctbanggiathucung){
         return ctBangGiaThuCungRepo.save(ctbanggiathucung);
     }

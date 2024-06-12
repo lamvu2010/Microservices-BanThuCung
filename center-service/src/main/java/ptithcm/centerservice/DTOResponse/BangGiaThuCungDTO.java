@@ -23,5 +23,6 @@ public class BangGiaThuCungDTO {
     private String tenGiong;
     private BigDecimal giaHienTai;
     private BigDecimal giaKhuyenMai;
+    private int soLuongTon;
     private byte[] hinhAnh;
 }
