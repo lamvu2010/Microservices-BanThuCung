@@ -60,6 +60,7 @@ public class BangGiaThuCungController {
                 bangGiaThuCungDTO.setMaThuCung((long) item.get("MATHUCUNG"));
                 bangGiaThuCungDTO.setTenThuCung((String) item.get("TENTHUCUNG"));
                 bangGiaThuCungDTO.setMoTa((String) item.get("MOTA"));
+                bangGiaThuCungDTO.setSoLuongTon((int)item.get("SOLUONGTON"));
                 bangGiaThuCungDTO.setGiaHienTai((BigDecimal) item.get("GIAHIENTAI"));
                 Thucung thucung = thuCungService.findById(bangGiaThuCungDTO.getMaThuCung()).get();
                 List<Hinhanh> hinhanhList = thucung.getHinhanh();
