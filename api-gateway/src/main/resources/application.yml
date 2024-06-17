@@ -1,18 +1,31 @@
 spring:
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - http://localhost:5173
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
         - id: center-post-route
           uri: lb://center-service
           predicates:
             - Method=POST,PUT,DELETE
             - Path=/center/**
-#          filters:
-#            - name: NhanVienFilter
-#            - name: CircuitBreaker
-#              args:
-#                name: center-service
-#                fallbackuri: forward:/centerServiceFallback
+        #          filters:
+        #            - name: NhanVienFilter
+        #            - name: CircuitBreaker
+        #              args:
+        #                name: center-service
+        #                fallbackuri: forward:/centerServiceFallback
 
 
         - id: center-get-route
@@ -21,11 +34,11 @@ spring:
             - Path=/center/**
             - Method=GET
 
-#          filters:
-#            - name: CircuitBreaker
-#              args:
-#                name: Api-BanThuCungOnline
-#                fallbackuri: forward:/centerServiceFallback
+        #          filters:
+        #            - name: CircuitBreaker
+        #              args:
+        #                name: Api-BanThuCungOnline
+        #                fallbackuri: forward:/centerServiceFallback
 
 
         - id: order-route
@@ -46,7 +59,7 @@ spring:
           uri: lb://identity-service
           predicates:
             - Path=/identity/khachhang,/identity/nhanvien
-          # filters:
+            # filters:
             # - name: AuthenticationFilter
 
 
@@ -54,8 +67,9 @@ spring:
           uri: lb://identity-service
           predicates:
             - Path=/identity/**
-          # filters:
+            # filters:
             # - name: NhanVienFilter
+
 
 eureka:
   client:
@@ -86,10 +100,14 @@ hystrix:
 authorization:
   rules:
     - path:
-      - /api/user/**
-      -
-      methods: [GET, POST]
-      roles: [USER, ADMIN]
+        - /api/user/**
+        -
+      methods: [ GET, POST ]
+      roles: [ USER, ADMIN ]
     - path: /api/admin/**
-      methods: [GET, POST, DELETE]
-      roles: [ADMIN]
+      methods: [ GET, POST, DELETE ]
+      roles: [ ADMIN ]
+
+    #spring:
+    #  cloud:
+    #    gateway:

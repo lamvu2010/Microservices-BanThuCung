@@ -60,6 +60,28 @@ public class NhanVienController {
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
+    @GetMapping("/chuacotk")
+    public ResponseEntity<List<NhanVienDTO>> getAllNhanVienKhongCoTK() {
+        List<Nhanvien> list = new ArrayList<>();
+        List<Taikhoan> listtk = new ArrayList<>();
+        List<NhanVienDTO> dtoList = new ArrayList<>();
+        list = nhanVienService.findAll();
+        listtk = taiKhoanService.findAll();
+        for(Nhanvien nv : list){
+            boolean matchFound = false;
+            for(Taikhoan tk : listtk){
+                if(nv.getManhanvien().equals(tk.getTendangnhap())){
+                    matchFound = true;
+                    break;
+                }
+            }
+            if(!matchFound){
+                dtoList.add(convertToDTO(nv));
+            }
+        }
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable String id) {
         Optional<Nhanvien> nhanvien = nhanVienService.findById(id);

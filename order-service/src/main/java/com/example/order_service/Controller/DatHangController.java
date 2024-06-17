@@ -135,7 +135,7 @@ public class DatHangController {
         }
     }
 
-    @PostMapping("/hoa-don")
+        @PostMapping("/hoa-don")
     public ResponseEntity<?> themHoaDon(@RequestBody HoaDonRequest hoaDonRequest) {
         if (!donDatService.isExistsById(hoaDonRequest.getSoHoaDon())) {
             return new ResponseEntity<>("Đơn đặt không tồn tai", HttpStatus.NOT_FOUND);
