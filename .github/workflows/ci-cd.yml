@@ -16,37 +16,38 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Build and push service-registry Docker image
-        run: ./mvnw compile jib:build -Dimage=lamvu2010/service-registry:latest
+        run: mvn compile jib:build -Dimage=lamvu2010/service-registry:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push api-gateway Docker image
-        run: ./mvnw compile jib:build -Dimage=lamvu2010/api-gateway:latest
+        run: mvn compile jib:build -Dimage=lamvu2010/api-gateway:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push identity-service Docker image
-        run: ./mvnw compile jib:build -Dimage=lamvu2010/identity-service:latest
+        run: mvn compile jib:build -Dimage=lamvu2010/identity-service:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push center-service Docker image
-        run: ./mvnw compile jib:build -Dimage=lamvu2010/center-service:latest
+        run: mvn compile jib:build -Dimage=lamvu2010/center-service:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push order-service Docker image
-        run: ./mvnw compile jib:build -Dimage=lamvu2010/order-service:latest
+        run: mvn compile jib:build -Dimage=lamvu2010/order-service:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
