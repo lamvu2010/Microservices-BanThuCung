@@ -6,8 +6,8 @@ import com.example.identity_service.Email.EmailService;
 import com.example.identity_service.Entity.Khachhang;
 import com.example.identity_service.Entity.Taikhoan;
 
-import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
+import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.commons.validator.routines.EmailValidator;
