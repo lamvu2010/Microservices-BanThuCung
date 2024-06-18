@@ -71,10 +71,6 @@
                         <image>eclipse-temurin:17.0.4.1_1-jre</image>
                     </from>
                     <to><image>registry.hub.docker.com/lamvu2010/${artifactId}</image></to>
-                    <auth>
-                        <username>${{ secrets.DOCKER_USERNAME }}</username>
-                        <password>${{ secrets.DOCKER_PASSWORD }}</password>
-                    </auth>
                 </configuration>
             </plugin>
         </plugins>
