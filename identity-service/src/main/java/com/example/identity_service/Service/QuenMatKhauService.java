@@ -5,8 +5,8 @@ import com.example.identity_service.Email.EmailService;
 import com.example.identity_service.Entity.Taikhoan;
 import com.netflix.discovery.converters.Auto;
 
-import javax.mail.MessagingException;
-import javax.transaction.Transactional;
+import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
