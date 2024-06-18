@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   service-registry:
-    image: lamvu2010/service-registry/:latest
+    image: lamvu2010/service-registry:latest
     container_name: service-registry
     pull_policy: always
     ports:
