@@ -1,0 +1,105 @@
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment:
+      MSSQL_SA_PASSWORD: "Password123@"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    expose:
+      - "1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+    restart: unless-stopped
+
+  service-registry:
+    image: lamvu2010/service-registry/:latest
+    container_name: service-registry
+    pull_policy: always
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  api-gateway:
+    image: lamvu2010/api-gateway:latest
+    container_name: api-gateway
+    pull_policy: always
+    ports:
+      - "8989:8989"
+    expose:
+      - "8989"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+    depends_on:
+      - service-registry
+
+  identity-service:
+    container_name: identity-service
+    image: lamvu2010/identity-service:latest
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://sqlserver:1433;databaseName=identity_service;encrypt=true;trustServerCertificate=true;
+      - SPRING_DATASOURCE_USERNAME=SA
+      - SPRING_DATASOURCE_PASSWORD=Password123@
+    volumes:
+      - identity-service-images:/path/in/container
+    depends_on:
+      - sqlserver
+      - service-registry
+      - api-gateway
+
+  center-service:
+    container_name: center-service
+    image: lamvu2010/center-service:latest
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://sqlserver:1433;databaseName=center_service;encrypt=true;trustServerCertificate=true;
+      - SPRING_DATASOURCE_USERNAME=SA
+      - SPRING_DATASOURCE_PASSWORD=Password123@
+    volumes:
+      - center-service-images:/path/in/container
+    depends_on:
+      - sqlserver
+      - service-registry
+      - api-gateway
+
+  order-service:
+    container_name: order-service
+    image: lamvu2010/order-service:latest
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://sqlserver:1433;databaseName=order_service;encrypt=true;trustServerCertificate=true;
+      - SPRING_DATASOURCE_USERNAME=SA
+      - SPRING_DATASOURCE_PASSWORD=Password123@
+    depends_on:
+      - sqlserver
+      - service-registry
+      - api-gateway
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    restart: always
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api-gateway
+
+volumes:
+  sqlserverdata:
+  center-service-images:
+  identity-service-images:
