@@ -49,3 +49,17 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: docker-compose -f ./docker-compose.yml up -d --build
+
+      - name: Deploy to Local Machine
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+        run: |
+          echo "${SSH_PRIVATE_KEY}" > private_key.pem
+          chmod 600 private_key.pem
+          eval "$(ssh-agent -s)"
+          echo "${SSH_PASSPHRASE}" | ssh-add private_key.pem
+          scp -o StrictHostKeyChecking=no -i private_key.pem ./scripts.sh ${SSH_USER}@${SSH_HOST}:./scripts.sh
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${SSH_USER}@${SSH_HOST} 'bash ./scripts.sh'
