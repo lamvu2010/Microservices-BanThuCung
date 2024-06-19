@@ -45,7 +45,6 @@ jobs:
 
 
       - name: Build and push order-service Docker image
-        env:
         run: mvn compile jib:build -Dimage=lamvu2010/order-service:latest
 
       - name: Deploy with Docker Compose
