@@ -49,6 +49,15 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: docker-compose -f ./docker-compose.yml up -d --build
+      - name: Test SSH connection
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          echo "${SSH_PRIVATE_KEY}" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${SSH_USER}@${SSH_HOST} 'echo "SSH connection successful"'
 
       - name: Deploy to Local Machine
         env:
