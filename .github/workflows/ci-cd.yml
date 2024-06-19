@@ -50,23 +50,34 @@ jobs:
 #      - name: Deploy with Docker Compose
 #        run: docker-compose -f ./docker-compose.yml up -d --build
 
-      - name: Start SSH Agent and Add Key
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          eval $(ssh-agent -s)
-          echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+#      - name: Start SSH Agent and Add Key
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#        run: |
+#          eval $(ssh-agent -s)
+#          echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+#
+#      - name: Test SSH connection
+#        env:
+#          SSH_HOST: ${{ secrets.SSH_HOST }}
+#          SSH_USER: ${{ secrets.SSH_USER }}
+#        run: |
+#          mkdir -p ~/.ssh
+#          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+#          chmod 600 ~/.ssh/id_rsa
+#          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'echo "SSH connection successful"'
 
-      - name: Test SSH connection
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'echo "SSH connection successful"'
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: SSH into Windows Server
+        env:
+            SSH_HOST: ${{ secrets.SSH_HOST }}
+            SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          ssh ${SSH_USER}@${SSH_HOST} "echo Hello from Ubuntu!"
 #      - name: Deploy to Local Machine
 #        env:
 #          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
