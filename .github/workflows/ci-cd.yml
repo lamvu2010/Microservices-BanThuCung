@@ -22,43 +22,31 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build and push service-registry Docker image
+      - name: Login to DockerHub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push service-registry Docker image
         run: mvn compile jib:build -Dimage=lamvu2010/service-registry:latest
 
 
       - name: Build and push api-gateway Docker image
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: mvn compile jib:build -Dimage=lamvu2010/api-gateway:latest
 
 
       - name: Build and push identity-service Docker image
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: mvn compile jib:build -Dimage=lamvu2010/identity-service:latest
 
 
       - name: Build and push center-service Docker image
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: mvn compile jib:build -Dimage=lamvu2010/center-service:latest
 
 
       - name: Build and push order-service Docker image
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: mvn compile jib:build -Dimage=lamvu2010/order-service:latest
-
-
-      - name: Login to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Deploy with Docker Compose
         run: docker-compose -f ./docker-compose.yml up -d --build
