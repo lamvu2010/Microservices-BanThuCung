@@ -50,11 +50,6 @@ jobs:
 #      - name: Deploy with Docker Compose
 #        run: docker-compose -f ./docker-compose.yml up -d --build
 
-      - name: Add known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
       - name: Start SSH Agent and Add Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
