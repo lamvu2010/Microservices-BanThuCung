@@ -28,44 +28,35 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-#      - name: Build and push service-registry Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/service-registry:latest
-#
-#
-#      - name: Build and push api-gateway Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/api-gateway:latest
-#
-#
-#      - name: Build and push identity-service Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/identity-service:latest
-#
-#
-#      - name: Build and push center-service Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/center-service:latest
-#
-#
-#      - name: Build and push order-service Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/order-service:latest
-#
-#      - name: Deploy with Docker Compose
-#        run: docker-compose -f ./docker-compose.yml up -d --build
+      - name: Build and push service-registry Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/service-registry:latest
 
-#      - name: Deploy to Local Machine
-##        env:
-##          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-##          SSH_HOST: ${{ secrets.SSH_HOST }}
-##          SSH_USER: ${{ secrets.SSH_USER }}
-##        run: |
-##          echo "${SSH_PRIVATE_KEY}" > private_key.pem
-##          chmod 600 private_key.pem
-##          scp -o StrictHostKeyChecking=no -i private_key.pem ./scripts.sh ${SSH_USER}@${SSH_HOST}:./scripts.sh
-##          ssh -o StrictHostKeyChecking=no -i private_key.pem ${SSH_USER}@${SSH_HOST} 'bash ./scripts.sh'
+
+      - name: Build and push api-gateway Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/api-gateway:latest
+
+
+      - name: Build and push identity-service Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/identity-service:latest
+
+
+      - name: Build and push center-service Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/center-service:latest
+
+
+      - name: Build and push order-service Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/order-service:latest
+
+      - name: Deploy with Docker Compose
+        run: docker-compose -f ./docker-compose.yml up -d --build
+
       - name: Deploy to Local Machine
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          username: ${{ secrets.SSH_USER }}
-          script: |
-            scp ./scripts.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./scripts.sh
-            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'powershell.exe -File ./scripts.sh'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          echo "${SSH_PRIVATE_KEY}" > private_key.pem
+          chmod 600 private_key.pem
+          scp -o StrictHostKeyChecking=no -i private_key.pem ./scripts.sh ${SSH_USER}@${SSH_HOST}:./scripts.sh
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${SSH_USER}@${SSH_HOST} 'bash ./scripts.sh'
