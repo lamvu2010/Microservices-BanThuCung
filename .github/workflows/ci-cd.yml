@@ -63,7 +63,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'echo "SSH connection successful"'
+          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST}
 
       - name: Deploy to Local Machine
         env:
