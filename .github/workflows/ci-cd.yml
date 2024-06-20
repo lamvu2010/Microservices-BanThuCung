@@ -50,6 +50,9 @@ jobs:
       - name: Deploy with Docker Compose
         run: docker-compose -f ./docker-compose.yml up -d --build
 
+      - name: Check for OpenSSH client
+        run: ssh -V
+
       - name: Start SSH Agent and Add Key
         uses: webfactory/ssh-agent@v0.5.3
         with:
