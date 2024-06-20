@@ -28,37 +28,52 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-#      - name: Build and push service-registry Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/service-registry:latest
-#
-#
-#      - name: Build and push api-gateway Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/api-gateway:latest
-#
-#
-#      - name: Build and push identity-service Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/identity-service:latest
-#
-#
-#      - name: Build and push center-service Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/center-service:latest
-#
-#
-#      - name: Build and push order-service Docker image
-#        run: mvn compile jib:build -Dimage=lamvu2010/order-service:latest
-#
-#      - name: Deploy with Docker Compose
-#        run: docker-compose -f ./docker-compose.yml up -d --build
+      - name: Build and push service-registry Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/service-registry:latest
 
-      - name: Deploy to Local Machine
+
+      - name: Build and push api-gateway Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/api-gateway:latest
+
+
+      - name: Build and push identity-service Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/identity-service:latest
+
+
+      - name: Build and push center-service Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/center-service:latest
+
+
+      - name: Build and push order-service Docker image
+        run: mvn compile jib:build -Dimage=lamvu2010/order-service:latest
+
+      - name: Deploy with Docker Compose
+        run: docker-compose -f ./docker-compose.yml up -d --build
+
+      - name: Start SSH Agent and Add Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          eval $(ssh-agent -s)
+          echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+
+      - name: Test SSH connection
+        env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          echo "${SSH_PRIVATE_KEY}" > private_key.pem
-          chmod 600 private_key.pem
-          eval "$(ssh-agent -s)"
-          ssh-add private_key.pem
-          scp -o StrictHostKeyChecking=no -i private_key.pem ./scripts.sh ${SSH_USER}@${SSH_HOST}:./scripts.sh
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ${SSH_USER}@${SSH_HOST} 'bash ./scripts.sh'
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'echo "SSH connection successful"'
+
+#      - name: Deploy to Local Machine
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#          SSH_HOST: ${{ secrets.SSH_HOST }}
+#          SSH_USER: ${{ secrets.SSH_USER }}
+#        run: |
+#          echo "${SSH_PRIVATE_KEY}" > private_key.pem
+#          chmod 600 private_key.pem
+#          scp -o StrictHostKeyChecking=no -i private_key.pem ./scripts.sh ${SSH_USER}@${SSH_HOST}:./scripts.sh
+#          ssh -o StrictHostKeyChecking=no -i private_key.pem ${SSH_USER}@${SSH_HOST} 'bash ./scripts.sh'
